@@ -1,0 +1,107 @@
+[
+  {
+    "name": "Uniswap",
+    "addresses": {
+      "1": [
+        "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+        "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45",
+        "0xEf1c6E67703c7BD7107eed8303Fbe6EC2554BF6B",
+        "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD"
+      ],
+      "8453": [
+        "0x2626664c2603336E57B271c5C0b26F421741e481",
+        "0x3fC91A3afd70395Cd496C647d5a6CC9D4B2b7FAD"
+      ]
+    },
+    "category": "dex",
+    "trusted": true
+  },
+  {
+    "name": "Aave V3",
+    "addresses": {
+      "1": [
+        "0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2",
+        "0x2f39d218133AFaB8F2B819B1066c7E434Ad94E9e"
+      ],
+      "8453": [
+        "0xA238Dd80C259a72e81d7e4664a9801593F98d1c5"
+      ]
+    },
+    "category": "lending",
+    "trusted": true
+  },
+  {
+    "name": "Compound V3",
+    "addresses": {
+      "1": [
+        "0xc3d688B66703497DAA19211EEdff47f25384cdc3",
+        "0xA17581A9E3356d9A858b789D68B4d866e593aE94"
+      ],
+      "8453": [
+        "0x46e6b214b524310239732D51387075E0e70970bf"
+      ]
+    },
+    "category": "lending",
+    "trusted": true
+  },
+  {
+    "name": "OpenSea",
+    "addresses": {
+      "1": [
+        "0x00000000000000ADc04C56Bf30aC9d3c0aAF14dC",
+        "0x00000000006c3852cbEf3e08E8dF289169EdE581"
+      ]
+    },
+    "category": "nft",
+    "trusted": true
+  },
+  {
+    "name": "1inch",
+    "addresses": {
+      "1": [
+        "0x1111111254EEB25477B68fb85Ed929f73A960582",
+        "0x111111125421cA6dc452d289314280a0f8842A65"
+      ],
+      "8453": [
+        "0x111111125421cA6dc452d289314280a0f8842A65"
+      ]
+    },
+    "category": "dex",
+    "trusted": true
+  },
+  {
+    "name": "Lido",
+    "addresses": {
+      "1": [
+        "0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84",
+        "0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0"
+      ]
+    },
+    "category": "yield",
+    "trusted": true
+  },
+  {
+    "name": "Curve",
+    "addresses": {
+      "1": [
+        "0xD51a44d3FaE010294C616388b506AcdA1bfAAE46",
+        "0xbEbc44782C7dB0a1A60Cb6fe97d0b483032FF1C7"
+      ]
+    },
+    "category": "dex",
+    "trusted": true
+  },
+  {
+    "name": "Stargate",
+    "addresses": {
+      "1": [
+        "0x8731d54E9D02c286767d56ac03e8037C07e01e98"
+      ],
+      "8453": [
+        "0x45f1A95A4D3f3836523F5c83673c797f4d4d263B"
+      ]
+    },
+    "category": "bridge",
+    "trusted": true
+  }
+]

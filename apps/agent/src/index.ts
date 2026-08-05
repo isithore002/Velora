@@ -1,0 +1,292 @@
+import { config as dotenvConfig } from "dotenv";
+dotenvConfig();
+
+import {
+  AuditLogger,
+  KeeperHubClient,
+  type DetectedEvent,
+  type AuditEntry,
+} from "@keeperguard/core";
+
+import { AlphaAgent } from "./alpha/detector.js";
+import { CritiqueAgent } from "./gamma/critique-agent.js";
+import { triggerProtection, deployProtectiveWorkflow } from "./keeperhub/workflows.js";
+import { createMockEvents } from "./engine/mock-events.js";
+import { SqliteAuditManager } from "./engine/audit-manager.js";
+
+// ─── Configuration ──────────────────────────────────────────────────────────
+
+const KEEPERHUB_API_KEY = process.env["KEEPERHUB_API_KEY"] ?? "kh_mock";
+const KEEPERHUB_ORG_ID = process.env["KEEPERHUB_ORG_ID"] ?? "org_mock";
+const OPENAI_API_KEY = process.env["OPENAI_API_KEY"] ?? "sk-your_mock_key";
+const MONITORED_WALLET = process.env["MONITORED_WALLET"] ?? "0x742d35Cc6634C0532925a3b844Bc9e7595f2bD28";
+const COLD_WALLET = process.env["COLD_WALLET"] ?? "0x0000000000000000000000000000000000C01D00";
+const THRESHOLD = Number(process.env["THRESHOLD"] ?? "70");
+const CHAIN_ID = Number(process.env["CHAIN_ID"] ?? "8453");
+const POLL_INTERVAL = Number(process.env["POLL_INTERVAL_MS"] ?? "30000");
+
+// ─── Initialize ─────────────────────────────────────────────────────────────
+
+const auditLogger = new AuditLogger();
+const auditManager = new SqliteAuditManager(auditLogger);
+const alphaAgent = new AlphaAgent({ gammaThreshold: THRESHOLD }, auditLogger);
+const gammaAgent = new CritiqueAgent(OPENAI_API_KEY);
+const keeperHubClient = new KeeperHubClient(KEEPERHUB_API_KEY, KEEPERHUB_ORG_ID, {
+  mockMode: !KEEPERHUB_API_KEY.startsWith("kh_"),
+});
+
+let isRunning = false;
+let processedTxHashes: Set<string> = new Set();
+
+// ─── CLI Mode Detection ─────────────────────────────────────────────────────
+
+const args = process.argv.slice(2);
+
+if (args.includes("--audit")) {
+  printAuditTrail();
+} else if (args.includes("--simulate")) {
+  const txIndex = args.indexOf("--tx");
+  const txHash = txIndex >= 0 ? args[txIndex + 1] : undefined;
+  await simulateMode(txHash);
+} else {
+  await startMonitoring();
+}
+
+// ─── Monitor Mode ───────────────────────────────────────────────────────────
+
+async function startMonitoring(): Promise<void> {
+  isRunning = true;
+
+  console.log(JSON.stringify({
+    type: "agent_start",
+    wallet: MONITORED_WALLET,
+    coldWallet: COLD_WALLET,
+    threshold: THRESHOLD,
+    chainId: CHAIN_ID,
+    pollInterval: POLL_INTERVAL,
+    mockMode: keeperHubClient.isMockMode(),
+    timestamp: Date.now(),
+  }));
+
+  console.log(`
+╔══════════════════════════════════════════════════════════╗
+║                   🛡️  KEEPERGUARD v0.1                  ║
+║          Anomaly Detection & Response Agent              ║
+╠══════════════════════════════════════════════════════════╣
+║  Wallet:    ${MONITORED_WALLET.slice(0, 10)}...${MONITORED_WALLET.slice(-6)}                    ║
+║  Chain:     ${CHAIN_ID}                                          ║
+║  Threshold: ${THRESHOLD}/100                                       ║
+║  Mode:      ${keeperHubClient.isMockMode() ? "MOCK (no live execution)" : "LIVE 🔴"}             ║
+╚══════════════════════════════════════════════════════════╝
+  `);
+
+  // Graceful shutdown
+  process.on("SIGINT", () => {
+    console.log("\n🛑 Shutting down gracefully...");
+    isRunning = false;
+    auditManager.close();
+  });
+
+  process.on("SIGTERM", () => {
+    console.log("\n🛑 Received SIGTERM, finishing current iteration...");
+    isRunning = false;
+    auditManager.close();
+  });
+
+  // Main loop
+  while (isRunning) {
+    try {
+      await pollAndProcess();
+    } catch (error) {
+      console.error(JSON.stringify({
+        type: "poll_error",
+        error: error instanceof Error ? error.message : String(error),
+        timestamp: Date.now(),
+      }));
+    }
+
+    if (isRunning) {
+      await sleep(POLL_INTERVAL);
+    }
+  }
+
+  console.log(`\n📊 Session Summary: ${auditLogger.getCount()} events processed`);
+}
+
+// ─── Simulate Mode ──────────────────────────────────────────────────────────
+
+async function simulateMode(txHash?: string): Promise<void> {
+  console.log("\n🧪 SIMULATE MODE — No actions will be executed\n");
+
+  const events = txHash
+    ? [createMockEvents(1, txHash)[0]!]
+    : createMockEvents(3);
+
+  for (const event of events) {
+    if (!event) continue;
+    console.log(`\n${"─".repeat(60)}`);
+    console.log(`📌 Transaction: ${event.txHash}`);
+
+    // Alpha analysis
+    const alphaDecision = alphaAgent.analyze(event);
+    console.log(`\n🔍 Alpha Score: ${alphaDecision.riskScore}/100 (${alphaDecision.threatLevel.toUpperCase()})`);
+    console.log(`   Proposed Action: ${alphaDecision.proposedAction}`);
+    console.log(`   Heuristics:`);
+    for (const h of alphaDecision.triggeredHeuristics) {
+      console.log(`     • ${h.name} (+${h.score})`);
+    }
+
+    if (alphaAgent.shouldEscalateToGamma(alphaDecision.riskScore)) {
+      // Gamma critique
+      console.log(`\n🧠 Gamma Critique (score > ${THRESHOLD}):`);
+      const critique = await gammaAgent.critique(
+        event,
+        alphaDecision,
+        auditLogger.getEntries({ limit: 10 })
+      );
+      console.log(`   Approve: ${critique.approve ? "✅" : "❌"}`);
+      console.log(`   Confidence: ${(critique.confidence * 100).toFixed(0)}%`);
+      console.log(`   Reasoning: ${critique.reasoning}`);
+      if (critique.overrideAlpha) {
+        console.log(`   ⚠️  OVERRIDE: ${critique.suggestedAction}`);
+      }
+    } else {
+      console.log(`\n🧠 Gamma: Skipped (score ${alphaDecision.riskScore} < threshold ${THRESHOLD})`);
+    }
+  }
+
+  console.log(`\n${"─".repeat(60)}`);
+  console.log("✅ Simulation complete\n");
+}
+
+// ─── Audit Mode ─────────────────────────────────────────────────────────────
+
+function printAuditTrail(): void {
+  const entries = auditLogger.getEntries({ limit: 20 });
+
+  if (entries.length === 0) {
+    console.log("\n📋 No audit entries found. Start monitoring to generate data.\n");
+    return;
+  }
+
+  console.log("\n📋 Last 20 Audit Entries:\n");
+  console.log("Time                 Tx Hash         Score  Level     Action            Status");
+  console.log("─".repeat(90));
+
+  for (const entry of entries) {
+    const time = new Date(entry.timestamp).toISOString().slice(11, 19);
+    const tx = entry.event.txHash.slice(0, 12) + "...";
+    const score = String(entry.alphaDecision.riskScore).padStart(3);
+    const level = entry.alphaDecision.threatLevel.padEnd(8);
+    const action = entry.finalAction.padEnd(16);
+    const status = entry.status;
+
+    console.log(`${time}  ${tx}  ${score}    ${level}  ${action}  ${status}`);
+  }
+
+  console.log("");
+}
+
+// ─── Core Processing Pipeline ───────────────────────────────────────────────
+
+async function pollAndProcess(): Promise<void> {
+  // Get new events (mock for now)
+  const events = createMockEvents(
+    Math.random() > 0.7 ? 1 : 0  // ~30% chance of event each poll
+  );
+
+  for (const event of events) {
+    if (processedTxHashes.has(event.txHash)) continue;
+    processedTxHashes.add(event.txHash);
+
+    await processEvent(event);
+  }
+}
+
+async function processEvent(event: DetectedEvent): Promise<void> {
+  // Step 1: Alpha Analysis
+  const alphaDecision = alphaAgent.analyze(event);
+  const auditEntry = auditLogger.createEntry(event, alphaDecision);
+
+  // Step 2: Check if Gamma critique is needed
+  if (!alphaAgent.shouldEscalateToGamma(alphaDecision.riskScore)) {
+    // Low risk — alert only
+    auditLogger.updateStatus(auditEntry.id, "confirmed");
+    return;
+  }
+
+  // Step 3: Pause 5 seconds before Gamma (give time for context)
+  await sleep(5000);
+  auditLogger.updateStatus(auditEntry.id, "critiquing");
+
+  // Step 4: Gamma Critique
+  const critique = await gammaAgent.critique(
+    event,
+    alphaDecision,
+    auditLogger.getEntries({ limit: 10 })
+  );
+  auditLogger.addCritique(auditEntry.id, critique);
+
+  // Step 5: Execute or reject
+  if (critique.approve) {
+    auditLogger.markExecuting(auditEntry.id);
+
+    const finalAction = critique.overrideAlpha
+      ? critique.suggestedAction
+      : alphaDecision.proposedAction;
+
+    try {
+      // Deploy and trigger KeeperHub workflow
+      const workflowId = await deployProtectiveWorkflow(
+        keeperHubClient,
+        finalAction,
+        {
+          tokenAddress: event.contractAddress,
+          spenderAddress: event.spender,
+          amount: event.amount,
+          config: {
+            chain: CHAIN_ID === 1 ? "ethereum" : "base",
+            monitoredWallet: MONITORED_WALLET,
+            coldWallet: COLD_WALLET,
+          },
+        }
+      );
+
+      if (workflowId !== "alert_only_no_workflow") {
+        const result = await triggerProtection(keeperHubClient, workflowId, {
+          txHash: event.txHash,
+          timestamp: Date.now(),
+        });
+
+        auditLogger.markConfirmed(
+          auditEntry.id,
+          result.txHash ?? "no-tx",
+          result.gasUsed ?? 0
+        );
+      } else {
+        auditLogger.updateStatus(auditEntry.id, "confirmed");
+      }
+    } catch (error) {
+      console.error(JSON.stringify({
+        type: "execution_error",
+        entryId: auditEntry.id,
+        error: error instanceof Error ? error.message : String(error),
+      }));
+      auditLogger.markFailed(auditEntry.id);
+    }
+  } else {
+    // Gamma rejected — alert only
+    console.log(JSON.stringify({
+      type: "gamma_rejection",
+      entryId: auditEntry.id,
+      txHash: event.txHash,
+      reasoning: critique.reasoning,
+    }));
+  }
+}
+
+// ─── Utilities ──────────────────────────────────────────────────────────────
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}

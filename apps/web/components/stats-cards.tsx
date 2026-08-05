@@ -1,0 +1,87 @@
+"use client";
+
+import { Shield, ShieldCheck, AlertTriangle, Clock } from "lucide-react";
+import { useAppStore } from "../lib/store";
+
+export function StatsCards() {
+  const { stats, connectionStatus } = useAppStore();
+
+  const cards = [
+    {
+      id: "stat-monitored",
+      label: "Total Events",
+      value: stats.totalEvents,
+      icon: Shield,
+      color: "text-kg-info",
+      bgColor: "bg-kg-info/10",
+      borderColor: "border-kg-info/20",
+    },
+    {
+      id: "stat-protected",
+      label: "Protected",
+      value: stats.protected,
+      icon: ShieldCheck,
+      color: "text-kg-safe",
+      bgColor: "bg-kg-safe/10",
+      borderColor: "border-kg-safe/20",
+    },
+    {
+      id: "stat-pending",
+      label: "Pending",
+      value: stats.pending,
+      icon: Clock,
+      color: "text-kg-warn",
+      bgColor: "bg-kg-warn/10",
+      borderColor: "border-kg-warn/20",
+    },
+    {
+      id: "stat-threats",
+      label: "Active Threats",
+      value: stats.monitored - stats.protected,
+      icon: AlertTriangle,
+      color: "text-kg-danger",
+      bgColor: "bg-kg-danger/10",
+      borderColor: "border-kg-danger/20",
+    },
+  ];
+
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {cards.map((card, index) => {
+        const Icon = card.icon;
+        return (
+          <div
+            key={card.id}
+            id={card.id}
+            className={`
+              relative overflow-hidden rounded-xl border ${card.borderColor}
+              bg-kg-surface p-5 transition-all duration-300
+              hover:border-opacity-50 hover:shadow-lg
+              animate-fade-in
+            `}
+            style={{ animationDelay: `${index * 100}ms` }}
+          >
+            {/* Background glow */}
+            <div
+              className={`absolute -top-8 -right-8 w-24 h-24 rounded-full ${card.bgColor} blur-2xl opacity-50`}
+            />
+
+            <div className="relative flex items-center justify-between">
+              <div>
+                <p className="text-sm text-kg-text-secondary font-medium">
+                  {card.label}
+                </p>
+                <p className={`text-3xl font-bold mt-1 ${card.color}`}>
+                  {card.value}
+                </p>
+              </div>
+              <div className={`${card.bgColor} p-3 rounded-xl`}>
+                <Icon className={`w-6 h-6 ${card.color}`} />
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}

@@ -1,0 +1,23 @@
+{
+  "name": "sweep-to-cold",
+  "description": "Emergency sweep of ERC20 tokens and native ETH to cold wallet",
+  "trigger": "webhook",
+  "chain": "base",
+  "steps": [
+    {
+      "action": "transfer",
+      "params": {
+        "token": "{{TOKEN_ADDRESS}}",
+        "to": "{{COLD_WALLET}}",
+        "amount": "{{AMOUNT}}"
+      }
+    },
+    {
+      "action": "native_transfer",
+      "params": {
+        "to": "{{COLD_WALLET}}",
+        "amount": "all_minus_gas"
+      }
+    }
+  ]
+}

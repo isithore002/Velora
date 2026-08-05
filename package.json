@@ -1,0 +1,24 @@
+{
+  "name": "keeperguard",
+  "version": "0.1.0",
+  "private": true,
+  "description": "KeeperGuard — AI anomaly detection agent for crypto wallet protection via KeeperHub",
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "test": "turbo test",
+    "clean": "turbo clean"
+  },
+  "devDependencies": {
+    "turbo": "^2.3.0",
+    "typescript": "^5.6.0",
+    "prettier": "^3.4.0",
+    "@types/node": "^20.17.0"
+  },
+  "packageManager": "pnpm@10.34.5",
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

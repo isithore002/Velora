@@ -1,0 +1,30 @@
+{
+  "name": "heartbeat-monitor",
+  "description": "Check wallet balance every 5 minutes and notify on unexpected changes",
+  "trigger": "cron",
+  "chain": "base",
+  "schedule": "*/5 * * * *",
+  "steps": [
+    {
+      "action": "read_contract",
+      "params": {
+        "address": "{{WALLET_ADDRESS}}",
+        "method": "balance",
+        "args": []
+      }
+    },
+    {
+      "action": "webhook",
+      "params": {
+        "url": "{{CALLBACK_URL}}",
+        "method": "POST",
+        "body": {
+          "wallet": "{{WALLET_ADDRESS}}",
+          "type": "heartbeat",
+          "balance": "{{PREVIOUS_STEP_RESULT}}",
+          "timestamp": "{{TIMESTAMP}}"
+        }
+      }
+    }
+  ]
+}

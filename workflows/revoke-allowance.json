@@ -1,0 +1,24 @@
+{
+  "name": "revoke-allowance",
+  "description": "Revoke an ERC20 token approval by setting allowance to 0",
+  "trigger": "webhook",
+  "chain": "base",
+  "steps": [
+    {
+      "action": "read_contract",
+      "params": {
+        "address": "{{TOKEN_ADDRESS}}",
+        "method": "allowance",
+        "args": ["{{WALLET_ADDRESS}}", "{{SPENDER_ADDRESS}}"]
+      }
+    },
+    {
+      "action": "write_contract",
+      "params": {
+        "address": "{{TOKEN_ADDRESS}}",
+        "method": "approve",
+        "args": ["{{SPENDER_ADDRESS}}", "0"]
+      }
+    }
+  ]
+}
