@@ -135,7 +135,8 @@ export class CritiqueAgent {
       return this.mockCritique(event, alphaDecision);
     }
 
-    const userPrompt = this.buildUserPrompt(event, alphaDecision, recentHistory);
+    const reputation = await this.fetchContractReputation(event.chainId, event.contractAddress);
+    const userPrompt = this.buildUserPrompt(event, alphaDecision, recentHistory, reputation);
 
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
@@ -186,7 +187,8 @@ export class CritiqueAgent {
   private buildUserPrompt(
     event: DetectedEvent,
     alphaDecision: AlphaDecision,
-    recentHistory: AuditEntry[]
+    recentHistory: AuditEntry[],
+    reputation: any
   ): string {
     const historySnippet = recentHistory.slice(0, 5).map((h) => ({
       txHash: h.event.txHash,
@@ -194,6 +196,15 @@ export class CritiqueAgent {
       action: h.finalAction,
       status: h.status,
     }));
+
+    let reputationSnippet = "Not available.";
+    if (reputation) {
+      reputationSnippet = `- Is Honeypot: ${reputation.is_honeypot === "1" ? "Yes 🚨" : "No"}
+- Is Blacklisted: ${reputation.is_blacklisted === "1" ? "Yes 🚨" : "No"}
+- Is Open Source: ${reputation.is_open_source === "1" ? "Yes" : "No"}
+- In Trust List: ${reputation.trust_list === "1" ? "Yes ✅" : "No"}
+- Malicious Behavior Flags: ${reputation.malicious_behavior?.length ? reputation.malicious_behavior.join(", ") : "None"}`;
+    }
 
     return `## Detected Event
 - Transaction: ${event.txHash}
@@ -203,6 +214,9 @@ export class CritiqueAgent {
 - Amount: ${event.amount ?? "N/A"}
 - USD Value: ${event.usdValue !== undefined ? `$${event.usdValue.toLocaleString()}` : "Unknown"}
 - Function: ${event.functionName ?? event.functionSelector ?? "N/A"}
+
+## Smart Contract Reputation (GoPlus Security)
+${reputationSnippet}
 
 ## Alpha's Assessment
 - Risk Score: ${alphaDecision.riskScore}/100
@@ -215,6 +229,28 @@ ${alphaDecision.triggeredHeuristics.map((h) => `  • ${h.name} (+${h.score}): $
 ${JSON.stringify(historySnippet, null, 2)}
 
 Please evaluate this threat and provide your critique.`;
+  }
+
+  private async fetchContractReputation(chainId: number, contractAddress: string): Promise<any> {
+    try {
+      const response = await fetch(`https://api.gopluslabs.io/api/v1/token_security/${chainId}?contract_addresses=${contractAddress}`);
+      if (!response.ok) return null;
+      const data = await response.json() as any;
+      if (data.code !== 1) return null;
+      const contractData = data.result[contractAddress.toLowerCase()];
+      if (!contractData) return null;
+      
+      return {
+        is_honeypot: contractData.is_honeypot,
+        is_blacklisted: contractData.is_blacklisted,
+        is_open_source: contractData.is_open_source,
+        trust_list: contractData.trust_list,
+        malicious_behavior: contractData.malicious_behavior || [],
+      };
+    } catch (error) {
+      console.log(`[Gamma] Failed to fetch GoPlus reputation for ${contractAddress}:`, error instanceof Error ? error.message : String(error));
+      return null;
+    }
   }
 
   /**

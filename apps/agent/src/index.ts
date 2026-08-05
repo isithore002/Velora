@@ -13,6 +13,7 @@ import { CritiqueAgent } from "./gamma/critique-agent.js";
 import { triggerProtection, deployProtectiveWorkflow } from "./keeperhub/workflows.js";
 import { createMockEvents } from "./engine/mock-events.js";
 import { SqliteAuditManager } from "./engine/audit-manager.js";
+import { ethers } from "ethers";
 
 // ─── Configuration ──────────────────────────────────────────────────────────
 
@@ -24,6 +25,7 @@ const COLD_WALLET = process.env["COLD_WALLET"] ?? "0x000000000000000000000000000
 const THRESHOLD = Number(process.env["THRESHOLD"] ?? "70");
 const CHAIN_ID = Number(process.env["CHAIN_ID"] ?? "8453");
 const POLL_INTERVAL = Number(process.env["POLL_INTERVAL_MS"] ?? "30000");
+const WSS_RPC_URL = process.env["WSS_RPC_URL"] ?? "";
 
 // ─── Initialize ─────────────────────────────────────────────────────────────
 
@@ -56,6 +58,7 @@ if (args.includes("--audit")) {
 
 async function startMonitoring(): Promise<void> {
   isRunning = true;
+  const isMockData = !WSS_RPC_URL;
 
   console.log(JSON.stringify({
     type: "agent_start",
@@ -70,44 +73,81 @@ async function startMonitoring(): Promise<void> {
 
   console.log(`
 ╔══════════════════════════════════════════════════════════╗
-║                   🛡️  KEEPERGUARD v0.1                  ║
+║                   🛡️  VELORA v0.1                       ║
 ║          Anomaly Detection & Response Agent              ║
 ╠══════════════════════════════════════════════════════════╣
 ║  Wallet:    ${MONITORED_WALLET.slice(0, 10)}...${MONITORED_WALLET.slice(-6)}                    ║
 ║  Chain:     ${CHAIN_ID}                                          ║
 ║  Threshold: ${THRESHOLD}/100                                       ║
 ║  Mode:      ${keeperHubClient.isMockMode() ? "MOCK (no live execution)" : "LIVE 🔴"}             ║
+║  Data:      ${isMockData ? "MOCK EVENTS 🧪" : "LIVE WEBSOCKET 🌐"}                  ║
 ╚══════════════════════════════════════════════════════════╝
   `);
 
   // Graceful shutdown
   process.on("SIGINT", () => {
-    console.log("\n🛑 Shutting down gracefully...");
+    console.log("\\n🛑 Shutting down gracefully...");
     isRunning = false;
     auditManager.close();
   });
 
   process.on("SIGTERM", () => {
-    console.log("\n🛑 Received SIGTERM, finishing current iteration...");
+    console.log("\\n🛑 Received SIGTERM, finishing current iteration...");
     isRunning = false;
     auditManager.close();
   });
 
-  // Main loop
-  while (isRunning) {
-    try {
-      await pollAndProcess();
-    } catch (error) {
-      console.error(JSON.stringify({
-        type: "poll_error",
-        error: error instanceof Error ? error.message : String(error),
-        timestamp: Date.now(),
-      }));
-    }
+  if (isMockData) {
+    console.log("No WSS_RPC_URL provided. Falling back to MOCK events engine.");
+    // Main loop
+    while (isRunning) {
+      try {
+        await pollAndProcess();
+      } catch (error) {
+        console.error(JSON.stringify({
+          type: "poll_error",
+          error: error instanceof Error ? error.message : String(error),
+          timestamp: Date.now(),
+        }));
+      }
 
-    if (isRunning) {
-      await sleep(POLL_INTERVAL);
+      if (isRunning) {
+        await sleep(POLL_INTERVAL);
+      }
     }
+  } else {
+    console.log(`Connecting to WebSocket provider at ${WSS_RPC_URL}...`);
+    const provider = new ethers.WebSocketProvider(WSS_RPC_URL);
+    
+    provider.on("pending", async (txHash: string) => {
+      if (!isRunning) return;
+      try {
+        const tx = await provider.getTransaction(txHash);
+        if (!tx) return;
+        
+        // Check if our monitored wallet is involved
+        if (tx.from?.toLowerCase() === MONITORED_WALLET.toLowerCase() || 
+            tx.to?.toLowerCase() === MONITORED_WALLET.toLowerCase()) {
+            
+            if (processedTxHashes.has(tx.hash)) return;
+            processedTxHashes.add(tx.hash);
+            
+            const event = await parseEthersTx(tx);
+            if (event) {
+              console.log(`[Live WebSockets] Detected pending tx ${tx.hash} involving monitored wallet`);
+              await processEvent(event);
+            }
+        }
+      } catch (err) {
+         // ignore fetch errors for fast moving mempool
+      }
+    });
+
+    // Keep process alive
+    while (isRunning) {
+      await sleep(10000);
+    }
+    provider.removeAllListeners();
   }
 
   console.log(`\n📊 Session Summary: ${auditLogger.getCount()} events processed`);
@@ -289,4 +329,37 @@ async function processEvent(event: DetectedEvent): Promise<void> {
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function parseEthersTx(tx: ethers.TransactionResponse): Promise<DetectedEvent | null> {
+  // If to is null, it's a contract creation
+  if (!tx.to) return null;
+  
+  const data = tx.data;
+  let functionName = "transfer";
+  let spender: string | undefined;
+  let amount: string | undefined;
+  const functionSelector = data.length >= 10 ? data.slice(0, 10) : undefined;
+  
+  // Very basic ERC20 approve parsing
+  // approve(address,uint256) selector is 0x095ea7b3
+  if (functionSelector === "0x095ea7b3" && data.length >= 138) {
+    functionName = "approve";
+    spender = "0x" + data.slice(34, 74);
+    amount = ethers.formatEther(ethers.toBigInt("0x" + data.slice(74, 138)));
+  } else if (functionSelector) {
+    functionName = "contract_interaction";
+  }
+
+  return {
+    txHash: tx.hash,
+    chainId: Number(tx.chainId),
+    contractAddress: tx.to,
+    spender,
+    amount,
+    functionSelector,
+    functionName,
+    timestamp: Date.now(),
+    riskScore: 0,
+  };
 }
