@@ -3,7 +3,7 @@ import {
   type WorkflowDefinition,
   type ExecutionResult,
   type ProtectiveAction,
-} from "@keeperguard/core";
+} from "@velora/core";
 
 /** Configuration for workflow building */
 interface WorkflowConfig {

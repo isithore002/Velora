@@ -1,8 +1,8 @@
 {
-  "name": "@keeperguard/adapters",
+  "name": "@velora/adapters",
   "version": "0.1.0",
   "private": true,
-  "description": "Framework adapters for KeeperGuard (LangChain, ElizaOS, etc.)",
+  "description": "Framework adapters for Velora (LangChain, ElizaOS, etc.)",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -19,7 +19,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@keeperguard/core": "workspace:*",
+    "@velora/core": "workspace:*",
     "@langchain/core": "^0.3.0",
     "zod": "^3.23.0"
   },

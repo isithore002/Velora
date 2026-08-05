@@ -1,6 +1,6 @@
 ---
 name: build-web-dashboard
-description: "Build the Next.js App Router dashboard for KeeperGuard to visualize live threats and simulation."
+description: "Build the Next.js App Router dashboard for Velora to visualize live threats and simulation."
 ---
 # Skill: Build Web Dashboard
 ## Trigger

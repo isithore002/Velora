@@ -1,7 +1,7 @@
 {
-  "name": "@keeperguard/core",
+  "name": "@velora/core",
   "version": "0.1.0",
-  "description": "Core library for KeeperGuard anomaly detection — risk engine, action registry, audit logger, and KeeperHub client",
+  "description": "Core library for Velora anomaly detection — risk engine, action registry, audit logger, and KeeperHub client",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",

@@ -1,6 +1,6 @@
 import { tool } from "@langchain/core/tools";
 import { z } from "zod";
-import { KeeperHubClient, ProtectiveActionSchema, type ProtectiveAction } from "@keeperguard/core";
+import { KeeperHubClient, ProtectiveActionSchema, type ProtectiveAction } from "@velora/core";
 
 /**
  * Creates a LangChain tool that allows any LLM agent to execute protective actions
@@ -8,7 +8,7 @@ import { KeeperHubClient, ProtectiveActionSchema, type ProtectiveAction } from "
  * 
  * @param keeperHubClient An authenticated instance of KeeperHubClient
  */
-export function createKeeperGuardTool(keeperHubClient: KeeperHubClient) {
+export function createVeloraTool(keeperHubClient: KeeperHubClient) {
   return tool(
     async ({ action, tokenAddress, spenderAddress, amount, monitoredWallet, coldWallet }) => {
       try {
@@ -48,7 +48,7 @@ export function createKeeperGuardTool(keeperHubClient: KeeperHubClient) {
       }
     },
     {
-      name: "keeperguard_protect",
+      name: "velora_protect",
       description: "Executes a protective onchain action via KeeperHub (e.g., revoking allowance, sweeping funds) in response to a detected anomaly.",
       schema: z.object({
         action: ProtectiveActionSchema,

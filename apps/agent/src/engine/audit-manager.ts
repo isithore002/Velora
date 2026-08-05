@@ -1,10 +1,10 @@
 import Database from "better-sqlite3";
-import type { AuditEntry, AuditLogger } from "@keeperguard/core";
+import type { AuditEntry, AuditLogger } from "@velora/core";
 import { join } from "path";
 import { mkdirSync } from "fs";
 
 /**
- * SQLite backing store for the KeeperGuard AuditLogger.
+ * SQLite backing store for the Velora AuditLogger.
  * Persists audit entries across agent restarts.
  */
 export class SqliteAuditManager {

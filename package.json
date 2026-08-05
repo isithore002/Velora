@@ -1,8 +1,8 @@
 {
-  "name": "keeperguard",
+  "name": "velora",
   "version": "0.1.0",
   "private": true,
-  "description": "KeeperGuard — AI anomaly detection agent for crypto wallet protection via KeeperHub",
+  "description": "Velora — AI anomaly detection agent for crypto wallet protection via KeeperHub",
   "scripts": {
     "build": "turbo build",
     "dev": "turbo dev",

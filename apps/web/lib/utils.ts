@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import type { ThreatLevel } from "@keeperguard/core";
+import type { ThreatLevel } from "@velora/core";
 
 /** Merge Tailwind classes safely */
 export function cn(...inputs: ClassValue[]): string {

@@ -6,7 +6,7 @@ import {
   KeeperHubClient,
   type DetectedEvent,
   type AuditEntry,
-} from "@keeperguard/core";
+} from "@velora/core";
 
 import { AlphaAgent } from "./alpha/detector.js";
 import { CritiqueAgent } from "./gamma/critique-agent.js";

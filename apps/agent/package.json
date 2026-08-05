@@ -1,8 +1,8 @@
 {
-  "name": "@keeperguard/agent",
+  "name": "@velora/agent",
   "version": "0.1.0",
   "private": true,
-  "description": "KeeperGuard agent runtime — Alpha detection + Gamma critique + KeeperHub execution",
+  "description": "Velora agent runtime — Alpha detection + Gamma critique + KeeperHub execution",
   "type": "module",
   "scripts": {
     "start": "tsx src/index.ts",
@@ -14,7 +14,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@keeperguard/core": "workspace:*",
+    "@velora/core": "workspace:*",
     "@langchain/core": "^0.3.0",
     "@langchain/openai": "^0.3.0",
     "langchain": "^0.3.0",

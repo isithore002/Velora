@@ -1,8 +1,8 @@
 ---
 name: test-and-demo
-description: "Verify the KeeperGuard system is fully operational. Run the continuous monitoring loop in simulation mode."
+description: "Verify the Velora system is fully operational. Run the continuous monitoring loop in simulation mode."
 ---
-# Skill: Test & Demo KeeperGuard
+# Skill: Test & Demo Velora
 ## Trigger
 User says: "test the agent", "run a demo", "verify the system"
 ## Steps

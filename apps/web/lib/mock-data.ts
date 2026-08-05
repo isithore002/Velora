@@ -1,4 +1,4 @@
-import type { AuditEntry, ThreatLevel } from "@keeperguard/core";
+import type { AuditEntry, ThreatLevel } from "@velora/core";
 
 /**
  * Generate realistic mock audit entries for the dashboard.

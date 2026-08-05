@@ -1,4 +1,4 @@
-# KeeperGuard Project Context
+# Velora Project Context
 
 ## What We're Building
 An AI agent that protects crypto wallets by detecting anomalous transactions

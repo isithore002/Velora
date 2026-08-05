@@ -1,12 +1,12 @@
-# KeeperGuard 🛡️
+# Velora 🛡️
 
 **The Anomaly Response Agent**
 
-KeeperGuard is an AI agent that protects crypto wallets by detecting anomalous transactions and executing protective actions (revoke allowances, sweep funds) via KeeperHub. It is built for a hackathon and demonstrates a modern two-agent pattern.
+Velora is an AI agent that protects crypto wallets by detecting anomalous transactions and executing protective actions (revoke allowances, sweep funds) via KeeperHub. It is built for a hackathon and demonstrates a modern two-agent pattern.
 
 ## Architecture
 
-KeeperGuard uses a Two-Agent pattern:
+Velora uses a Two-Agent pattern:
 1. **Alpha Agent (Detector)**: Analyzes incoming blockchain events against heuristics (e.g. unknown spender, unlimited approval, large amount, etc). It scores risk from 0-100.
 2. **Gamma Agent (Critique)**: If Alpha's score exceeds a configured threshold, the event is sent to Gamma (an LLM-powered agent via OpenAI). Gamma critiques Alpha's reasoning and either approves the action, rejects it, or overrides it (e.g. from "alert_only" to "revoke_allowance").
 
@@ -17,7 +17,7 @@ All on-chain execution flows strictly through **KeeperHub**.
 This is a Turborepo monorepo using `pnpm`.
 
 - `packages/core/`: Shared business logic, Risk Engine (Alpha), Audit Logger, and KeeperHub Client.
-- `packages/adapters/`: Framework integrations (LangChain, ElizaOS) making KeeperGuard reusable.
+- `packages/adapters/`: Framework integrations (LangChain, ElizaOS) making Velora reusable.
 - `apps/agent/`: The Node.js runtime executing the continuous Alpha + Gamma loop.
 - `apps/web/`: A Next.js (App Router) dashboard for monitoring threats and simulating events.
 - `workflows/`: JSON definitions for KeeperHub workflows.

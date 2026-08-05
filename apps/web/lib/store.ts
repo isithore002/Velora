@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import type { AuditEntry, ThreatLevel } from "@keeperguard/core";
+import type { AuditEntry, ThreatLevel } from "@velora/core";
 
 /** Dashboard connection status */
 type ConnectionStatus = "connected" | "disconnected" | "connecting";

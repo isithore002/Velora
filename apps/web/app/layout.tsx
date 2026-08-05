@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "KeeperGuard — Anomaly Detection Agent",
+  title: "Velora — Anomaly Detection Agent",
   description:
     "AI-powered anomaly detection and protective execution agent for crypto wallets. Powered by KeeperHub.",
-  keywords: ["keeperguard", "keeper", "crypto", "wallet", "security", "anomaly", "detection"],
+  keywords: ["velora", "keeper", "crypto", "wallet", "security", "anomaly", "detection"],
 };
 
 export default function RootLayout({

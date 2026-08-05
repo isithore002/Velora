@@ -4,7 +4,7 @@ import {
   type CritiqueResult,
   type AuditEntry,
   CritiqueResultSchema,
-} from "@keeperguard/core";
+} from "@velora/core";
 
 /** System prompt instructing Gamma to be skeptical but not paranoid */
 const GAMMA_SYSTEM_PROMPT = `You are a skeptical security auditor for crypto wallets. Your role is to challenge Alpha agent's threat assessments before any protective action is executed.

@@ -1,7 +1,7 @@
-# KeeperGuard — Project Rules
+# Velora — Project Rules
 
 ## Project Identity
-KeeperGuard is an anomaly detection and protective execution agent for crypto wallets.
+Velora is an anomaly detection and protective execution agent for crypto wallets.
 It uses a two-agent pattern: Alpha (detection) and Gamma (critique).
 All onchain execution flows through KeeperHub (keeperhub.com).
 

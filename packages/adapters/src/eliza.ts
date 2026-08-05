@@ -1,4 +1,4 @@
-import { KeeperHubClient, type ProtectiveAction } from "@keeperguard/core";
+import { KeeperHubClient, type ProtectiveAction } from "@velora/core";
 
 // Mocking ElizaOS types for the adapter interface
 type ElizaAction = {
@@ -15,14 +15,14 @@ type ElizaPlugin = {
 };
 
 /**
- * Creates an ElizaOS plugin for KeeperGuard protection capabilities.
+ * Creates an ElizaOS plugin for Velora protection capabilities.
  * Allows Eliza-based agents to trigger KeeperHub protective workflows.
  * 
  * @param keeperHubClient An authenticated instance of KeeperHubClient
  */
-export function createKeeperGuardElizaPlugin(keeperHubClient: KeeperHubClient): ElizaPlugin {
+export function createVeloraElizaPlugin(keeperHubClient: KeeperHubClient): ElizaPlugin {
   return {
-    name: "keeperguard-protect",
+    name: "velora-protect",
     description: "Enables the agent to execute protective onchain actions via KeeperHub in response to wallet anomalies.",
     actions: [
       {
@@ -60,7 +60,7 @@ export function createKeeperGuardElizaPlugin(keeperHubClient: KeeperHubClient): 
 
             return true;
           } catch (error) {
-            console.error("Eliza KeeperGuard Action Failed:", error);
+            console.error("Eliza Velora Action Failed:", error);
             return false;
           }
         }

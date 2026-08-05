@@ -16,5 +16,5 @@ User says: "build risk engine", "build alpha agent", "create detection logic"
 5. Write vitest tests
 
 ## Verification
-- All tests pass: `pnpm test --filter @keeperguard/core`
+- All tests pass: `pnpm test --filter @velora/core`
 - RiskEngine correctly scores test events across all threat levels

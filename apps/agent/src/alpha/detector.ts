@@ -5,7 +5,7 @@ import {
   type DetectedEvent,
   type AlphaDecision,
   type RiskEngineConfig,
-} from "@keeperguard/core";
+} from "@velora/core";
 
 /**
  * Alpha Agent — The Detector

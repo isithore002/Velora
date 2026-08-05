@@ -1,12 +1,12 @@
 ---
-name: setup-keeperguard-project
-description: "Scaffold the KeeperGuard monorepo with Turborepo, pnpm, TypeScript strict mode, and all workspace packages. This skill runs ONCE at project initialization."
+name: setup-velora-project
+description: "Scaffold the Velora monorepo with Turborepo, pnpm, TypeScript strict mode, and all workspace packages. This skill runs ONCE at project initialization."
 ---
 
-# Skill: Setup KeeperGuard Project
+# Skill: Setup Velora Project
 
 ## Trigger
-User says: "setup keeperguard", "scaffold project", "initialize monorepo"
+User says: "setup velora", "scaffold project", "initialize monorepo"
 
 ## Steps
 1. Create root package.json with pnpm workspaces
