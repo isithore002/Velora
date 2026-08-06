@@ -48,10 +48,17 @@ export class KeeperHubClient {
     if (this.mockMode) return;
     
     try {
+      const headers = {
+        "Authorization": `Bearer ${this.apiKey}`,
+        "X-Org-Id": this.orgId,
+      };
+
       const transport = new SSEClientTransport(new URL("https://app.keeperhub.com/mcp"), {
-        headers: {
-          "Authorization": `Bearer ${this.apiKey}`,
-          "X-Org-Id": this.orgId,
+        eventSourceInit: {
+          headers
+        } as any,
+        requestInit: {
+          headers
         }
       });
       
