@@ -3,6 +3,8 @@ import type {
   ExecutionResult,
   AuditEntry,
 } from "./types";
+import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { SSEClientTransport } from "@modelcontextprotocol/sdk/client/sse.js";
 
 /** Structured log entry for KeeperHub API calls */
 interface ApiCallLog {
@@ -26,6 +28,7 @@ export class KeeperHubClient {
   private readonly baseUrl: string;
   private readonly logs: ApiCallLog[] = [];
   private readonly mockMode: boolean;
+  private mcpClient?: Client;
 
   constructor(
     apiKey: string,
@@ -36,6 +39,38 @@ export class KeeperHubClient {
     this.orgId = orgId;
     this.baseUrl = options?.baseUrl ?? "https://app.keeperhub.com/api";
     this.mockMode = options?.mockMode ?? !apiKey.startsWith("kh_");
+  }
+
+  /**
+   * Initialize the MCP connection to KeeperHub for tool discovery.
+   */
+  public async initializeMCP(): Promise<void> {
+    if (this.mockMode) return;
+    
+    try {
+      const transport = new SSEClientTransport(new URL("https://app.keeperhub.com/mcp"), {
+        headers: {
+          "Authorization": `Bearer ${this.apiKey}`,
+          "X-Org-Id": this.orgId,
+        }
+      });
+      
+      this.mcpClient = new Client(
+        {
+          name: "velora-agent",
+          version: "0.1.0",
+        },
+        {
+          capabilities: {}
+        }
+      );
+      
+      await this.mcpClient.connect(transport);
+      this.log("MCP", "connect", "success", 0);
+    } catch (error) {
+      this.log("MCP", "connect", "error", 0, undefined, error instanceof Error ? error.message : String(error));
+      console.warn("Failed to connect to KeeperHub MCP server:", error);
+    }
   }
 
   /**
@@ -119,6 +154,16 @@ export class KeeperHubClient {
         { name: "native_transfer", chains: ["ethereum", "base"] },
         { name: "webhook", chains: ["*"] },
       ];
+    }
+
+    if (this.mcpClient) {
+      try {
+        const tools = await this.mcpClient.listTools();
+        this.log("MCP", "listTools", "success", 20);
+        return tools.tools;
+      } catch (err) {
+        this.log("MCP", "listTools", "error", 0, undefined, String(err));
+      }
     }
 
     const response = await this.fetchWithRetry("GET", "/action-schemas");

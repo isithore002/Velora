@@ -37,6 +37,7 @@ const gammaAgent = new CritiqueAgent(GEMINI_API_KEY);
 const keeperHubClient = new KeeperHubClient(KEEPERHUB_API_KEY, KEEPERHUB_ORG_ID, {
   mockMode: !KEEPERHUB_API_KEY.startsWith("kh_"),
 });
+await keeperHubClient.initializeMCP();
 
 let isRunning = false;
 let processedTxHashes: Set<string> = new Set();
