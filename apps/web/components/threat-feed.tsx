@@ -144,7 +144,7 @@ export function ThreatFeed() {
 }
 
 function StatusBadge({ status }: { status: string }) {
-  const config: Record<string, { label: string; className: string }> = {
+  const config: Record<string, { label: string; icon: any; className: string }> = {
     detected: { label: "Detected", icon: Bell, className: "text-v-info" },
     scoring: { label: "Scoring", icon: Search, className: "text-v-info" },
     critiquing: { label: "Critiquing", icon: Brain, className: "text-v-warn" },
