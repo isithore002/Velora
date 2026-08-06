@@ -238,7 +238,7 @@ Please evaluate this threat and provide your critique.`;
       const response = await fetch(`https://api.gopluslabs.io/api/v1/token_security/${chainId}?contract_addresses=${contractAddress}`);
       if (!response.ok) return null;
       const data = await response.json() as any;
-      if (data.code !== 1) return null;
+      if (!data || data.code !== 1 || !data.result) return null;
       const contractData = data.result[contractAddress.toLowerCase()];
       if (!contractData) return null;
       

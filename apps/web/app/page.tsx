@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { Shield, Activity, Search, Settings, Radio } from "lucide-react";
 import { useAppStore } from "../lib/store";
-import { generateMockThreats } from "../lib/mock-data";
 import { ThreatFeed } from "../components/threat-feed";
 import { AuditTimeline } from "../components/audit-timeline";
 import { SimulatePanel } from "../components/simulate-panel";
@@ -25,20 +24,46 @@ export default function DashboardPage() {
   const { setThreats, connectionStatus, setConnectionStatus, selectedThreat } =
     useAppStore();
 
-  // Load mock data on mount
+  // Connect to live agent via WebSockets
   useEffect(() => {
-    const mockThreats = generateMockThreats(12);
-    setThreats(mockThreats);
-    setConnectionStatus("connected");
+    setConnectionStatus("connecting");
+    const ws = new WebSocket("ws://localhost:3001");
 
-    // Simulate live updates every 15 seconds
-    const interval = setInterval(() => {
-      const newThreats = generateMockThreats(1);
-      const store = useAppStore.getState();
-      store.addThreat(newThreats[0]!);
-    }, 15000);
+    ws.onopen = () => {
+      setConnectionStatus("connected");
+    };
 
-    return () => clearInterval(interval);
+    ws.onclose = () => {
+      setConnectionStatus("disconnected");
+    };
+
+    ws.onerror = () => {
+      setConnectionStatus("disconnected");
+    };
+
+    ws.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        const store = useAppStore.getState();
+        
+        if (data.type === "INIT") {
+          setThreats(data.entries);
+        } else if (data.type === "UPDATE") {
+          const exists = store.threats.some((t) => t.id === data.entry.id);
+          if (exists) {
+            store.updateThreat(data.entry.id, data.entry);
+          } else {
+            store.addThreat(data.entry);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to parse WS message", err);
+      }
+    };
+
+    return () => {
+      ws.close();
+    };
   }, [setThreats, setConnectionStatus]);
 
   return (

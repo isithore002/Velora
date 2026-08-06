@@ -14,6 +14,7 @@ import { triggerProtection, deployProtectiveWorkflow } from "./keeperhub/workflo
 import { createMockEvents } from "./engine/mock-events.js";
 import { SqliteAuditManager } from "./engine/audit-manager.js";
 import { ethers } from "ethers";
+import { WebSocketServer } from "ws";
 
 // ─── Configuration ──────────────────────────────────────────────────────────
 
@@ -39,6 +40,27 @@ const keeperHubClient = new KeeperHubClient(KEEPERHUB_API_KEY, KEEPERHUB_ORG_ID,
 
 let isRunning = false;
 let processedTxHashes: Set<string> = new Set();
+
+// ─── WebSocket Server ───────────────────────────────────────────────────────
+
+const wss = new WebSocketServer({ port: 3001 });
+console.log("📡 WebSocket Server listening on port 3001");
+
+wss.on("connection", (ws) => {
+  ws.send(JSON.stringify({
+    type: "INIT",
+    entries: auditLogger.getEntries({ limit: 50 })
+  }));
+});
+
+auditLogger.onUpdate((entry) => {
+  const payload = JSON.stringify({ type: "UPDATE", entry });
+  wss.clients.forEach((client) => {
+    if (client.readyState === 1) {
+      client.send(payload);
+    }
+  });
+});
 
 // ─── CLI Mode Detection ─────────────────────────────────────────────────────
 
