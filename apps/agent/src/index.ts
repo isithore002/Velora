@@ -52,9 +52,26 @@ wss.on("connection", (ws) => {
     type: "INIT",
     entries: auditLogger.getEntries({ limit: 50 })
   }));
+
+  ws.on("message", async (data) => {
+    try {
+      const msg = JSON.parse(data.toString());
+      if (msg.type === "SIMULATE_ATTACK") {
+        console.log("🚨 Received manual simulate attack trigger from dashboard");
+        const syntheticEvent = createMockEvents(1)[0];
+        if (syntheticEvent) {
+          syntheticEvent.contractAddress = MONITORED_WALLET; // Set to user's wallet
+          syntheticEvent.amount = "1000.0"; // Large suspicious amount
+          await processEvent(syntheticEvent);
+        }
+      }
+    } catch (e) {
+      // Ignore
+    }
+  });
 });
 
-auditLogger.onUpdate((entry) => {
+auditLogger.onUpdate((entry: AuditEntry) => {
   const payload = JSON.stringify({ type: "UPDATE", entry });
   wss.clients.forEach((client) => {
     if (client.readyState === 1) {

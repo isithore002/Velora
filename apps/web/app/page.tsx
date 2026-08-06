@@ -21,27 +21,29 @@ const NAV_ITEMS: Array<{ id: Tab; label: string; icon: typeof Shield }> = [
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState<Tab>("threats");
+  const [ws, setWs] = useState<WebSocket | null>(null);
   const { setThreats, connectionStatus, setConnectionStatus, selectedThreat } =
     useAppStore();
 
   // Connect to live agent via WebSockets
   useEffect(() => {
     setConnectionStatus("connecting");
-    const ws = new WebSocket("ws://localhost:3001");
+    const socket = new WebSocket("ws://localhost:3001");
+    setWs(socket);
 
-    ws.onopen = () => {
+    socket.onopen = () => {
       setConnectionStatus("connected");
     };
 
-    ws.onclose = () => {
+    socket.onclose = () => {
       setConnectionStatus("disconnected");
     };
 
-    ws.onerror = () => {
+    socket.onerror = () => {
       setConnectionStatus("disconnected");
     };
 
-    ws.onmessage = (event) => {
+    socket.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
         const store = useAppStore.getState();
@@ -62,9 +64,15 @@ export default function DashboardPage() {
     };
 
     return () => {
-      ws.close();
+      socket.close();
     };
   }, [setThreats, setConnectionStatus]);
+
+  const handleSimulateAttack = () => {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(JSON.stringify({ type: "SIMULATE_ATTACK" }));
+    }
+  };
 
   return (
     <div className="min-h-screen bg-v-base flex flex-col relative overflow-hidden">
@@ -91,6 +99,13 @@ export default function DashboardPage() {
                 {connectionStatus === "connected" ? "LIVE" : "OFFLINE"}
               </span>
             </div>
+            
+            <button
+              onClick={handleSimulateAttack}
+              className="bg-v-danger/20 hover:bg-v-danger/30 text-v-danger px-3 py-1 rounded text-xs font-bold tracking-wider uppercase border border-v-danger/40 transition-colors shadow-[0_0_10px_rgba(239,68,68,0.2)]"
+            >
+              Simulate Attack
+            </button>
 
             <div className="h-6 w-px bg-v-border" />
 
