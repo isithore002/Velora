@@ -32,36 +32,36 @@ export function SettingsPanel() {
 
   return (
     <div className="space-y-6 max-w-3xl">
-      <h2 className="text-lg font-semibold text-kg-text">Configuration</h2>
+      <h2 className="text-lg font-semibold text-v-text">Configuration</h2>
 
       {/* Connection Status */}
-      <div className="bg-kg-surface rounded-xl border border-kg-border p-5">
-        <h3 className="text-sm font-semibold text-kg-text-secondary uppercase tracking-wider mb-4">
+      <div className="bg-v-surface rounded-xl border border-v-border p-5">
+        <h3 className="text-sm font-semibold text-v-text-secondary uppercase tracking-wider mb-4">
           KeeperHub Connection
         </h3>
         <div className="flex items-center gap-3">
           {connectionStatus === "connected" ? (
-            <Wifi className="w-5 h-5 text-kg-safe" />
+            <Wifi className="w-5 h-5 text-v-safe" />
           ) : (
-            <WifiOff className="w-5 h-5 text-kg-danger" />
+            <WifiOff className="w-5 h-5 text-v-danger" />
           )}
-          <span className="text-sm text-kg-text">
+          <span className="text-sm text-v-text">
             {connectionStatus === "connected"
               ? "Connected (Mock Mode)"
               : "Disconnected"}
           </span>
-          <span className="text-xs text-kg-text-secondary ml-auto font-mono">
+          <span className="text-xs text-v-text-secondary ml-auto font-mono">
             Base (Chain ID: 8453)
           </span>
         </div>
       </div>
 
       {/* Threshold */}
-      <div className="bg-kg-surface rounded-xl border border-kg-border p-5">
-        <h3 className="text-sm font-semibold text-kg-text-secondary uppercase tracking-wider mb-4">
+      <div className="bg-v-surface rounded-xl border border-v-border p-5">
+        <h3 className="text-sm font-semibold text-v-text-secondary uppercase tracking-wider mb-4">
           Gamma Threshold
         </h3>
-        <p className="text-xs text-kg-text-secondary mb-4">
+        <p className="text-xs text-v-text-secondary mb-4">
           Events with risk scores above this threshold trigger the Gamma critique agent.
         </p>
         <div className="flex items-center gap-4">
@@ -72,21 +72,21 @@ export function SettingsPanel() {
             max={100}
             value={localThreshold}
             onChange={(e) => setLocalThreshold(Number((e.target as HTMLInputElement).value))}
-            className="flex-1 h-2 bg-kg-border rounded-full appearance-none cursor-pointer accent-kg-info"
+            className="flex-1 h-2 bg-v-border rounded-full appearance-none cursor-pointer accent-v-info"
           />
-          <span className="text-2xl font-bold font-mono text-kg-text w-16 text-right">
+          <span className="text-2xl font-bold font-mono text-v-text w-16 text-right">
             {localThreshold}
           </span>
         </div>
-        <div className="flex justify-between text-xs text-kg-text-secondary mt-1">
+        <div className="flex justify-between text-xs text-v-text-secondary mt-1">
           <span>Alert only</span>
           <span>Aggressive protection</span>
         </div>
       </div>
 
       {/* Heuristic Weights */}
-      <div className="bg-kg-surface rounded-xl border border-kg-border p-5">
-        <h3 className="text-sm font-semibold text-kg-text-secondary uppercase tracking-wider mb-4">
+      <div className="bg-v-surface rounded-xl border border-v-border p-5">
+        <h3 className="text-sm font-semibold text-v-text-secondary uppercase tracking-wider mb-4">
           Heuristic Weights
         </h3>
         <div className="space-y-4">
@@ -94,14 +94,14 @@ export function SettingsPanel() {
             <div key={h.name} className="space-y-2">
               <div className="flex items-center justify-between">
                 <div>
-                  <span className="text-sm font-medium text-kg-text">
+                  <span className="text-sm font-medium text-v-text">
                     {h.name}
                   </span>
-                  <p className="text-xs text-kg-text-secondary">
+                  <p className="text-xs text-v-text-secondary">
                     {h.description}
                   </p>
                 </div>
-                <span className="text-lg font-bold font-mono text-kg-warn w-12 text-right">
+                <span className="text-lg font-bold font-mono text-v-warn w-12 text-right">
                   +{weights[h.name]}
                 </span>
               </div>
@@ -117,7 +117,7 @@ export function SettingsPanel() {
                     [h.name]: Number((e.target as HTMLInputElement).value),
                   }))
                 }
-                className="w-full h-1.5 bg-kg-border rounded-full appearance-none cursor-pointer accent-kg-warn"
+                className="w-full h-1.5 bg-v-border rounded-full appearance-none cursor-pointer accent-v-warn"
               />
             </div>
           ))}
@@ -125,14 +125,14 @@ export function SettingsPanel() {
       </div>
 
       {/* Wallet Addresses */}
-      <div className="bg-kg-surface rounded-xl border border-kg-border p-5 space-y-4">
-        <h3 className="text-sm font-semibold text-kg-text-secondary uppercase tracking-wider">
+      <div className="bg-v-surface rounded-xl border border-v-border p-5 space-y-4">
+        <h3 className="text-sm font-semibold text-v-text-secondary uppercase tracking-wider">
           Wallet Addresses
         </h3>
         <div>
           <label
             htmlFor="settings-monitored"
-            className="text-xs text-kg-text-secondary"
+            className="text-xs text-v-text-secondary"
           >
             Monitored Wallet
           </label>
@@ -141,13 +141,13 @@ export function SettingsPanel() {
             type="text"
             value={localMonitored}
             onChange={(e) => setLocalMonitored((e.target as HTMLInputElement).value)}
-            className="w-full mt-1 bg-kg-base border border-kg-border rounded-lg px-4 py-2.5 font-mono text-sm text-kg-text focus:outline-none focus:border-kg-info/50"
+            className="w-full mt-1 bg-v-base border border-v-border rounded-lg px-4 py-2.5 font-mono text-sm text-v-text focus:outline-none focus:border-v-info/50"
           />
         </div>
         <div>
           <label
             htmlFor="settings-cold"
-            className="text-xs text-kg-text-secondary"
+            className="text-xs text-v-text-secondary"
           >
             Cold Wallet (sweep destination)
           </label>
@@ -156,7 +156,7 @@ export function SettingsPanel() {
             type="text"
             value={localCold}
             onChange={(e) => setLocalCold((e.target as HTMLInputElement).value)}
-            className="w-full mt-1 bg-kg-base border border-kg-border rounded-lg px-4 py-2.5 font-mono text-sm text-kg-text focus:outline-none focus:border-kg-info/50"
+            className="w-full mt-1 bg-v-base border border-v-border rounded-lg px-4 py-2.5 font-mono text-sm text-v-text focus:outline-none focus:border-v-info/50"
           />
         </div>
       </div>
@@ -168,8 +168,8 @@ export function SettingsPanel() {
         className={cn(
           "flex items-center gap-2 px-6 py-3 rounded-lg font-medium text-sm transition-all cursor-pointer",
           saved
-            ? "bg-kg-safe text-white"
-            : "bg-kg-info text-white hover:bg-kg-info/90"
+            ? "bg-v-safe text-white"
+            : "bg-v-info text-white hover:bg-v-info/90"
         )}
       >
         {saved ? (

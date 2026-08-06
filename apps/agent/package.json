@@ -5,10 +5,11 @@
   "description": "Velora agent runtime — Alpha detection + Gamma critique + KeeperHub execution",
   "type": "module",
   "scripts": {
-    "start": "tsx src/index.ts",
-    "simulate": "tsx src/index.ts --simulate",
-    "audit": "tsx src/index.ts --audit",
-    "build": "tsc --noEmit",
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts",
+    "simulate": "node dist/index.js --simulate",
+    "audit": "node dist/index.js --audit",
+    "build": "tsup src/index.ts --format esm --clean",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "clean": "rm -rf dist"
@@ -17,7 +18,7 @@
     "@langchain/core": "^0.3.0",
     "@langchain/openai": "^0.3.0",
     "@velora/core": "workspace:*",
-    "better-sqlite3": "^11.6.0",
+    "better-sqlite3": "^13.0.3",
     "dotenv": "^16.4.0",
     "ethers": "^6.17.0",
     "langchain": "^0.3.0",
@@ -28,6 +29,7 @@
     "@types/better-sqlite3": "^7.6.0",
     "@types/node": "^20.17.0",
     "@types/ws": "^8.5.0",
+    "tsup": "^8.5.1",
     "tsx": "^4.19.0",
     "typescript": "^5.6.0",
     "vitest": "^2.1.0"

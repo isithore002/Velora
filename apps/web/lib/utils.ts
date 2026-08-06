@@ -11,13 +11,13 @@ export function cn(...inputs: ClassValue[]): string {
 export function getThreatColor(level: ThreatLevel): string {
   switch (level) {
     case "critical":
-      return "text-kg-danger";
+      return "text-v-danger";
     case "high":
       return "text-orange-400";
     case "medium":
-      return "text-kg-warn";
+      return "text-v-warn";
     case "low":
-      return "text-kg-safe";
+      return "text-v-safe";
   }
 }
 
@@ -25,13 +25,13 @@ export function getThreatColor(level: ThreatLevel): string {
 export function getThreatBg(level: ThreatLevel): string {
   switch (level) {
     case "critical":
-      return "bg-kg-danger/10 border-kg-danger/30";
+      return "bg-v-danger/10 border-v-danger/30";
     case "high":
       return "bg-orange-400/10 border-orange-400/30";
     case "medium":
-      return "bg-kg-warn/10 border-kg-warn/30";
+      return "bg-v-warn/10 border-v-warn/30";
     case "low":
-      return "bg-kg-safe/10 border-kg-safe/30";
+      return "bg-v-safe/10 border-v-safe/30";
   }
 }
 
@@ -39,27 +39,13 @@ export function getThreatBg(level: ThreatLevel): string {
 export function getThreatBadge(level: ThreatLevel): string {
   switch (level) {
     case "critical":
-      return "bg-kg-danger/20 text-kg-danger border border-kg-danger/30";
+      return "bg-v-danger/20 text-v-danger border border-v-danger/30";
     case "high":
       return "bg-orange-400/20 text-orange-400 border border-orange-400/30";
     case "medium":
-      return "bg-kg-warn/20 text-kg-warn border border-kg-warn/30";
+      return "bg-v-warn/20 text-v-warn border border-v-warn/30";
     case "low":
-      return "bg-kg-safe/20 text-kg-safe border border-kg-safe/30";
-  }
-}
-
-/** Get threat level emoji */
-export function getThreatEmoji(level: ThreatLevel): string {
-  switch (level) {
-    case "critical":
-      return "🔴";
-    case "high":
-      return "🟠";
-    case "medium":
-      return "🟡";
-    case "low":
-      return "🟢";
+      return "bg-v-safe/20 text-v-safe border border-v-safe/30";
   }
 }
 

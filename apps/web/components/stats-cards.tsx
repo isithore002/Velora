@@ -12,36 +12,36 @@ export function StatsCards() {
       label: "Total Events",
       value: stats.totalEvents,
       icon: Shield,
-      color: "text-kg-info",
-      bgColor: "bg-kg-info/10",
-      borderColor: "border-kg-info/20",
+      color: "text-v-info",
+      bgColor: "bg-v-info/10",
+      borderColor: "border-v-info/20",
     },
     {
       id: "stat-protected",
       label: "Protected",
       value: stats.protected,
       icon: ShieldCheck,
-      color: "text-kg-safe",
-      bgColor: "bg-kg-safe/10",
-      borderColor: "border-kg-safe/20",
+      color: "text-v-safe",
+      bgColor: "bg-v-safe/10",
+      borderColor: "border-v-safe/20",
     },
     {
       id: "stat-pending",
       label: "Pending",
       value: stats.pending,
       icon: Clock,
-      color: "text-kg-warn",
-      bgColor: "bg-kg-warn/10",
-      borderColor: "border-kg-warn/20",
+      color: "text-v-warn",
+      bgColor: "bg-v-warn/10",
+      borderColor: "border-v-warn/20",
     },
     {
       id: "stat-threats",
       label: "Active Threats",
       value: stats.monitored - stats.protected,
       icon: AlertTriangle,
-      color: "text-kg-danger",
-      bgColor: "bg-kg-danger/10",
-      borderColor: "border-kg-danger/20",
+      color: "text-v-danger",
+      bgColor: "bg-v-danger/10",
+      borderColor: "border-v-danger/20",
     },
   ];
 
@@ -55,7 +55,7 @@ export function StatsCards() {
             id={card.id}
             className={`
               relative overflow-hidden rounded-xl border ${card.borderColor}
-              bg-kg-surface p-5 transition-all duration-300
+              bg-v-surface p-5 transition-all duration-300
               hover:border-opacity-50 hover:shadow-lg
               animate-fade-in
             `}
@@ -68,7 +68,7 @@ export function StatsCards() {
 
             <div className="relative flex items-center justify-between">
               <div>
-                <p className="text-sm text-kg-text-secondary font-medium">
+                <p className="text-sm text-v-text-secondary font-medium">
                   {card.label}
                 </p>
                 <p className={`text-3xl font-bold mt-1 ${card.color}`}>

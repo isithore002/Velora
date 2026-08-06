@@ -8,19 +8,21 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "kg-base": "#020617",
-        "kg-surface": "#0f172a",
-        "kg-elevated": "#1e293b",
-        "kg-border": "#334155",
-        "kg-text": "#f8fafc",
-        "kg-text-secondary": "#94a3b8",
-        "kg-safe": "#10b981",
-        "kg-warn": "#f59e0b",
-        "kg-danger": "#f43f5e",
-        "kg-info": "#3b82f6",
+        "v-base": "#000000",
+        "v-surface": "#0a0a0a",
+        "v-elevated": "#111111",
+        "v-border": "#222222",
+        "v-text": "#ffffff",
+        "v-text-secondary": "#a1a1aa",
+        "v-safe": "#10b981",
+        "v-warn": "#f59e0b",
+        "v-danger": "#f43f5e",
+        "v-info": "#8b5cf6",
+        "v-accent": "#ec4899",
+        "v-cyan": "#06b6d4",
       },
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
+        sans: ["Outfit", "system-ui", "sans-serif"],
         mono: ["JetBrains Mono", "Fira Code", "monospace"],
       },
       animation: {

@@ -19,7 +19,7 @@ import { ethers } from "ethers";
 
 const KEEPERHUB_API_KEY = process.env["KEEPERHUB_API_KEY"] ?? "kh_mock";
 const KEEPERHUB_ORG_ID = process.env["KEEPERHUB_ORG_ID"] ?? "org_mock";
-const OPENAI_API_KEY = process.env["OPENAI_API_KEY"] ?? "sk-your_mock_key";
+const GEMINI_API_KEY = process.env["GEMINI_API_KEY"] ?? "your_mock_key";
 const MONITORED_WALLET = process.env["MONITORED_WALLET"] ?? "0x742d35Cc6634C0532925a3b844Bc9e7595f2bD28";
 const COLD_WALLET = process.env["COLD_WALLET"] ?? "0x0000000000000000000000000000000000C01D00";
 const THRESHOLD = Number(process.env["THRESHOLD"] ?? "70");
@@ -32,7 +32,7 @@ const WSS_RPC_URL = process.env["WSS_RPC_URL"] ?? "";
 const auditLogger = new AuditLogger();
 const auditManager = new SqliteAuditManager(auditLogger);
 const alphaAgent = new AlphaAgent({ gammaThreshold: THRESHOLD }, auditLogger);
-const gammaAgent = new CritiqueAgent(OPENAI_API_KEY);
+const gammaAgent = new CritiqueAgent(GEMINI_API_KEY);
 const keeperHubClient = new KeeperHubClient(KEEPERHUB_API_KEY, KEEPERHUB_ORG_ID, {
   mockMode: !KEEPERHUB_API_KEY.startsWith("kh_"),
 });

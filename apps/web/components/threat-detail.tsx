@@ -1,12 +1,11 @@
 "use client";
 
-import { X, ExternalLink, Shield, Brain, Zap } from "lucide-react";
+import { X, ExternalLink, Shield, Brain, Zap, CheckCircle2, XCircle, AlertTriangle } from "lucide-react";
 import { useAppStore } from "../lib/store";
 import {
   formatAddress,
   formatUSD,
   getThreatBadge,
-  getThreatEmoji,
   cn,
 } from "../lib/utils";
 
@@ -27,9 +26,9 @@ export function ThreatDetail() {
       />
 
       {/* Slide-over Panel */}
-      <div className="fixed right-0 top-0 bottom-0 w-full max-w-xl bg-kg-surface border-l border-kg-border z-50 overflow-y-auto animate-slide-in">
+      <div className="fixed right-0 top-0 bottom-0 w-full max-w-xl bg-v-surface border-l border-v-border z-50 overflow-y-auto animate-slide-in">
         {/* Header */}
-        <div className="sticky top-0 glass border-b border-kg-border p-4 flex items-center justify-between z-10">
+        <div className="sticky top-0 glass border-b border-v-border p-4 flex items-center justify-between z-10">
           <div className="flex items-center gap-3">
             <span
               className={cn(
@@ -37,17 +36,16 @@ export function ThreatDetail() {
                 getThreatBadge(entry.alphaDecision.threatLevel)
               )}
             >
-              {getThreatEmoji(entry.alphaDecision.threatLevel)}{" "}
               {entry.alphaDecision.threatLevel.toUpperCase()}
             </span>
-            <span className="font-mono text-sm text-kg-text-secondary">
+            <span className="font-mono text-sm text-v-text-secondary">
               {formatAddress(entry.event.txHash)}
             </span>
           </div>
           <button
             id="close-detail"
             onClick={() => selectThreat(null)}
-            className="p-2 hover:bg-kg-elevated rounded-lg transition-colors cursor-pointer"
+            className="p-2 hover:bg-v-elevated rounded-lg transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -62,7 +60,7 @@ export function ThreatDetail() {
                   cx="64"
                   cy="64"
                   r="56"
-                  className="fill-none stroke-kg-border"
+                  className="fill-none stroke-v-border"
                   strokeWidth="8"
                 />
                 <circle
@@ -72,12 +70,12 @@ export function ThreatDetail() {
                   className={cn(
                     "fill-none",
                     score >= 85
-                      ? "stroke-kg-danger"
+                      ? "stroke-v-danger"
                       : score >= 70
                       ? "stroke-orange-400"
                       : score >= 50
-                      ? "stroke-kg-warn"
-                      : "stroke-kg-safe"
+                      ? "stroke-v-warn"
+                      : "stroke-v-safe"
                   )}
                   strokeWidth="8"
                   strokeLinecap="round"
@@ -88,15 +86,15 @@ export function ThreatDetail() {
                 {score}
               </span>
             </div>
-            <p className="text-sm text-kg-text-secondary mt-2">Risk Score</p>
+            <p className="text-sm text-v-text-secondary mt-2">Risk Score</p>
           </div>
 
           {/* Event Details */}
           <section className="space-y-3">
-            <h3 className="text-sm font-semibold text-kg-text-secondary uppercase tracking-wider flex items-center gap-2">
+            <h3 className="text-sm font-semibold text-v-text-secondary uppercase tracking-wider flex items-center gap-2">
               <Shield className="w-4 h-4" /> Event Details
             </h3>
-            <div className="bg-kg-base rounded-xl p-4 space-y-2 font-mono text-sm border border-kg-border">
+            <div className="bg-v-base rounded-xl p-4 space-y-2 font-mono text-sm border border-v-border">
               <DetailRow label="Tx Hash" value={entry.event.txHash} link />
               <DetailRow label="Chain" value={`${entry.event.chainId}`} />
               <DetailRow
@@ -123,31 +121,31 @@ export function ThreatDetail() {
 
           {/* Alpha Analysis */}
           <section className="space-y-3">
-            <h3 className="text-sm font-semibold text-kg-text-secondary uppercase tracking-wider flex items-center gap-2">
-              <Shield className="w-4 h-4 text-kg-info" /> Alpha Analysis
+            <h3 className="text-sm font-semibold text-v-text-secondary uppercase tracking-wider flex items-center gap-2">
+              <Shield className="w-4 h-4 text-v-info" /> Alpha Analysis
             </h3>
-            <div className="bg-kg-base rounded-xl p-4 border border-kg-border space-y-3">
+            <div className="bg-v-base rounded-xl p-4 border border-v-border space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-kg-text-secondary">
+                <span className="text-sm text-v-text-secondary">
                   Proposed Action
                 </span>
-                <span className="text-sm font-semibold capitalize text-kg-text">
+                <span className="text-sm font-semibold capitalize text-v-text">
                   {entry.alphaDecision.proposedAction.replace(/_/g, " ")}
                 </span>
               </div>
 
               {entry.alphaDecision.triggeredHeuristics.length > 0 && (
                 <div className="space-y-2">
-                  <span className="text-xs text-kg-text-secondary">
+                  <span className="text-xs text-v-text-secondary">
                     Triggered Heuristics:
                   </span>
                   {entry.alphaDecision.triggeredHeuristics.map((h, i) => (
                     <div
                       key={i}
-                      className="flex items-center justify-between bg-kg-elevated rounded-lg px-3 py-2"
+                      className="flex items-center justify-between bg-v-elevated rounded-lg px-3 py-2"
                     >
-                      <span className="text-xs text-kg-text">{h.name}</span>
-                      <span className="text-xs font-bold text-kg-warn">
+                      <span className="text-xs text-v-text">{h.name}</span>
+                      <span className="text-xs font-bold text-v-warn">
                         +{h.score}
                       </span>
                     </div>
@@ -160,34 +158,36 @@ export function ThreatDetail() {
           {/* Gamma Critique */}
           {entry.gammaCritique && (
             <section className="space-y-3">
-              <h3 className="text-sm font-semibold text-kg-text-secondary uppercase tracking-wider flex items-center gap-2">
+              <h3 className="text-sm font-semibold text-v-text-secondary uppercase tracking-wider flex items-center gap-2">
                 <Brain className="w-4 h-4 text-purple-400" /> Gamma Critique
               </h3>
               <div
                 className={cn(
                   "rounded-xl p-4 border space-y-3",
                   entry.gammaCritique.approve
-                    ? "bg-kg-safe/5 border-kg-safe/20"
-                    : "bg-kg-danger/5 border-kg-danger/20"
+                    ? "bg-v-safe/5 border-v-safe/20"
+                    : "bg-v-danger/5 border-v-danger/20"
                 )}
               >
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-semibold">
-                    {entry.gammaCritique.approve
-                      ? "✅ APPROVED"
-                      : "❌ REJECTED"}
+                    {entry.gammaCritique.approve ? (
+                      <span className="flex items-center gap-1"><CheckCircle2 className="w-4 h-4" /> APPROVED</span>
+                    ) : (
+                      <span className="flex items-center gap-1"><XCircle className="w-4 h-4" /> REJECTED</span>
+                    )}
                   </span>
-                  <span className="text-sm font-mono text-kg-text-secondary">
+                  <span className="text-sm font-mono text-v-text-secondary">
                     {(entry.gammaCritique.confidence * 100).toFixed(0)}%
                     confidence
                   </span>
                 </div>
-                <p className="text-sm text-kg-text-secondary leading-relaxed">
+                <p className="text-sm text-v-text-secondary leading-relaxed">
                   {entry.gammaCritique.reasoning}
                 </p>
                 {entry.gammaCritique.overrideAlpha && (
-                  <div className="bg-kg-warn/10 border border-kg-warn/30 rounded-lg px-3 py-2 text-xs text-kg-warn">
-                    ⚠️ Gamma overrode Alpha's decision → {entry.gammaCritique.suggestedAction.replace(/_/g, " ")}
+                  <div className="bg-v-warn/10 border border-v-warn/30 rounded-lg px-3 py-2 text-xs text-v-warn flex items-center gap-1.5">
+                    <AlertTriangle className="w-3.5 h-3.5" /> Gamma overrode Alpha's decision → {entry.gammaCritique.suggestedAction.replace(/_/g, " ")}
                   </div>
                 )}
               </div>
@@ -197,10 +197,10 @@ export function ThreatDetail() {
           {/* KeeperHub Execution */}
           {entry.keeperhubTxHash && (
             <section className="space-y-3">
-              <h3 className="text-sm font-semibold text-kg-text-secondary uppercase tracking-wider flex items-center gap-2">
-                <Zap className="w-4 h-4 text-kg-warn" /> KeeperHub Execution
+              <h3 className="text-sm font-semibold text-v-text-secondary uppercase tracking-wider flex items-center gap-2">
+                <Zap className="w-4 h-4 text-v-warn" /> KeeperHub Execution
               </h3>
-              <div className="bg-kg-base rounded-xl p-4 border border-kg-border space-y-2 font-mono text-sm">
+              <div className="bg-v-base rounded-xl p-4 border border-v-border space-y-2 font-mono text-sm">
                 <DetailRow
                   label="Tx Hash"
                   value={formatAddress(entry.keeperhubTxHash)}
@@ -235,8 +235,8 @@ function DetailRow({
 }) {
   return (
     <div className="flex items-center justify-between">
-      <span className="text-kg-text-secondary">{label}</span>
-      <span className={cn("text-kg-text", link && "text-kg-info flex items-center gap-1")}>
+      <span className="text-v-text-secondary">{label}</span>
+      <span className={cn("text-v-text", link && "text-v-info flex items-center gap-1")}>
         {value}
         {link && <ExternalLink className="w-3 h-3" />}
       </span>

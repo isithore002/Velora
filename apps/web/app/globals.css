@@ -5,16 +5,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
-  --bg-base: #020617;
-  --bg-surface: #0f172a;
-  --bg-elevated: #1e293b;
-  --border-default: #334155;
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
+  --bg-base: #09090b;
+  --bg-surface: #18181b;
+  --bg-elevated: #27272a;
+  --border-default: #3f3f46;
+  --text-primary: #fafafa;
+  --text-secondary: #a1a1aa;
   --accent-safe: #10b981;
   --accent-warn: #f59e0b;
   --accent-danger: #f43f5e;
-  --accent-info: #3b82f6;
+  --accent-info: #6366f1;
+  --accent-violet: #8b5cf6;
 }
 
 * {
@@ -51,15 +52,16 @@ body {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #475569;
+  background: #52525b;
 }
 
 /* Utility classes */
 .glass {
-  background: rgba(15, 23, 42, 0.8);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(51, 65, 85, 0.5);
+  background: rgba(24, 24, 27, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(63, 63, 70, 0.4);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 
 .risk-score-gradient {

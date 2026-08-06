@@ -41,12 +41,12 @@ Respond in valid JSON matching this exact schema:
  * Includes circuit breaker: 3 consecutive failures → fallback to Alpha.
  */
 export class CritiqueAgent {
-  private readonly openaiApiKey: string;
+  private readonly geminiApiKey: string;
   private consecutiveFailures: number = 0;
   private readonly maxFailures: number = 3;
 
-  constructor(openaiApiKey: string) {
-    this.openaiApiKey = openaiApiKey;
+  constructor(geminiApiKey: string) {
+    this.geminiApiKey = geminiApiKey;
   }
 
   /**
@@ -131,43 +131,45 @@ export class CritiqueAgent {
     recentHistory: AuditEntry[]
   ): Promise<CritiqueResult> {
     // Use mock mode if no real API key
-    if (!this.openaiApiKey || this.openaiApiKey.startsWith("sk-your")) {
+    if (!this.geminiApiKey || this.geminiApiKey.startsWith("your_")) {
       return this.mockCritique(event, alphaDecision);
     }
 
     const reputation = await this.fetchContractReputation(event.chainId, event.contractAddress);
     const userPrompt = this.buildUserPrompt(event, alphaDecision, recentHistory, reputation);
 
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${this.geminiApiKey}`, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${this.openaiApiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "gpt-4o-mini",
-        messages: [
-          { role: "system", content: GAMMA_SYSTEM_PROMPT },
-          { role: "user", content: userPrompt },
+        systemInstruction: {
+          parts: [{ text: GAMMA_SYSTEM_PROMPT }]
+        },
+        contents: [
+          { role: "user", parts: [{ text: userPrompt }] }
         ],
-        temperature: 0.3,
-        response_format: { type: "json_object" },
+        generationConfig: {
+          temperature: 0.3,
+          responseMimeType: "application/json"
+        }
       }),
       signal: AbortSignal.timeout(30_000),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(`OpenAI API error ${response.status}: ${errorText}`);
+      throw new Error(`Gemini API error ${response.status}: ${errorText}`);
     }
 
     const data = await response.json() as {
-      choices: Array<{ message: { content: string } }>;
+      candidates?: Array<{ content: { parts: Array<{ text: string }> } }>;
     };
 
-    const content = data.choices[0]?.message?.content;
+    const content = data.candidates?.[0]?.content?.parts?.[0]?.text;
     if (!content) {
-      throw new Error("Empty response from OpenAI");
+      throw new Error("Empty response from Gemini");
     }
 
     const parsed: unknown = JSON.parse(content);

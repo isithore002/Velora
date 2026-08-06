@@ -54,20 +54,20 @@ export function SimulatePanel() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-lg font-semibold text-kg-text">
+        <h2 className="text-lg font-semibold text-v-text">
           Threat Simulator
         </h2>
-        <p className="text-sm text-kg-text-secondary mt-1">
+        <p className="text-sm text-v-text-secondary mt-1">
           Paste a transaction hash to run it through the Alpha + Gamma pipeline
           without executing any actions.
         </p>
       </div>
 
       {/* Input */}
-      <div className="bg-kg-surface rounded-xl border border-kg-border p-6 space-y-4">
+      <div className="bg-v-surface rounded-xl border border-v-border p-6 space-y-4">
         <label
           htmlFor="sim-tx-hash"
-          className="text-sm font-medium text-kg-text-secondary"
+          className="text-sm font-medium text-v-text-secondary"
         >
           Transaction Hash
         </label>
@@ -78,7 +78,7 @@ export function SimulatePanel() {
             placeholder="0x..."
             value={txHash}
             onChange={(e) => setTxHash(e.target.value)}
-            className="flex-1 bg-kg-base border border-kg-border rounded-lg px-4 py-3 font-mono text-sm text-kg-text placeholder:text-kg-text-secondary/50 focus:outline-none focus:border-kg-info/50 focus:ring-1 focus:ring-kg-info/20 transition-all"
+            className="flex-1 bg-v-base border border-v-border rounded-lg px-4 py-3 font-mono text-sm text-v-text placeholder:text-v-text-secondary/50 focus:outline-none focus:border-v-info/50 focus:ring-1 focus:ring-v-info/20 transition-all"
           />
           <button
             id="sim-run-btn"
@@ -86,7 +86,7 @@ export function SimulatePanel() {
             disabled={isRunning || !txHash.trim()}
             className={cn(
               "flex items-center gap-2 px-6 py-3 rounded-lg font-medium text-sm transition-all",
-              "bg-kg-info text-white hover:bg-kg-info/90 disabled:opacity-40 disabled:cursor-not-allowed",
+              "bg-v-info text-white hover:bg-v-info/90 disabled:opacity-40 disabled:cursor-not-allowed",
               "cursor-pointer"
             )}
           >
@@ -111,7 +111,7 @@ export function SimulatePanel() {
               "0x3f8a92c1d4e5b6f7a8091234567890abcdef0123456789abcdef0123456789ab"
             )
           }
-          className="text-xs text-kg-info/60 hover:text-kg-info transition-colors cursor-pointer"
+          className="text-xs text-v-info/60 hover:text-v-info transition-colors cursor-pointer"
         >
           Use example transaction ↗
         </button>
@@ -119,7 +119,7 @@ export function SimulatePanel() {
 
       {/* Results */}
       {result && (
-        <div className="bg-kg-surface rounded-xl border border-kg-border p-6 space-y-6 animate-fade-in">
+        <div className="bg-v-surface rounded-xl border border-v-border p-6 space-y-6 animate-fade-in">
           {/* Score Header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -127,12 +127,12 @@ export function SimulatePanel() {
                 className={cn(
                   "text-5xl font-bold font-mono",
                   result.riskScore >= 85
-                    ? "text-kg-danger"
+                    ? "text-v-danger"
                     : result.riskScore >= 70
                     ? "text-orange-400"
                     : result.riskScore >= 50
-                    ? "text-kg-warn"
-                    : "text-kg-safe"
+                    ? "text-v-warn"
+                    : "text-v-safe"
                 )}
               >
                 {result.riskScore}
@@ -146,7 +146,7 @@ export function SimulatePanel() {
                 >
                   {getThreatEmoji(result.threatLevel)} {result.threatLevel.toUpperCase()}
                 </span>
-                <p className="text-sm text-kg-text-secondary mt-1">
+                <p className="text-sm text-v-text-secondary mt-1">
                   Proposed: {result.proposedAction.replace(/_/g, " ")}
                 </p>
               </div>
@@ -155,7 +155,7 @@ export function SimulatePanel() {
 
           {/* Score Breakdown */}
           <div>
-            <h3 className="text-sm font-semibold text-kg-text-secondary uppercase tracking-wider mb-3">
+            <h3 className="text-sm font-semibold text-v-text-secondary uppercase tracking-wider mb-3">
               Heuristic Breakdown
             </h3>
             <div className="space-y-2">
@@ -163,23 +163,23 @@ export function SimulatePanel() {
                 result.heuristics.map((h, i) => (
                   <div
                     key={i}
-                    className="flex items-center justify-between bg-kg-base rounded-lg px-4 py-3 border border-kg-border"
+                    className="flex items-center justify-between bg-v-base rounded-lg px-4 py-3 border border-v-border"
                   >
                     <div>
-                      <span className="text-sm font-medium text-kg-text">
+                      <span className="text-sm font-medium text-v-text">
                         {h.name}
                       </span>
-                      <p className="text-xs text-kg-text-secondary">
+                      <p className="text-xs text-v-text-secondary">
                         {h.description}
                       </p>
                     </div>
-                    <span className="text-lg font-bold text-kg-warn font-mono">
+                    <span className="text-lg font-bold text-v-warn font-mono">
                       +{h.score}
                     </span>
                   </div>
                 ))
               ) : (
-                <div className="bg-kg-base rounded-lg px-4 py-3 border border-kg-border text-sm text-kg-text-secondary">
+                <div className="bg-v-base rounded-lg px-4 py-3 border border-v-border text-sm text-v-text-secondary">
                   No heuristics triggered
                 </div>
               )}
@@ -188,33 +188,33 @@ export function SimulatePanel() {
 
           {/* Gamma Critique */}
           <div>
-            <h3 className="text-sm font-semibold text-kg-text-secondary uppercase tracking-wider mb-3">
+            <h3 className="text-sm font-semibold text-v-text-secondary uppercase tracking-wider mb-3">
               Gamma Critique
             </h3>
             <div
               className={cn(
                 "rounded-xl p-4 border",
                 result.gammaApprove
-                  ? "bg-kg-safe/5 border-kg-safe/20"
-                  : "bg-kg-danger/5 border-kg-danger/20"
+                  ? "bg-v-safe/5 border-v-safe/20"
+                  : "bg-v-danger/5 border-v-danger/20"
               )}
             >
               <div className="flex items-center gap-2 mb-2">
                 {result.gammaApprove ? (
-                  <CheckCircle className="w-5 h-5 text-kg-safe" />
+                  <CheckCircle className="w-5 h-5 text-v-safe" />
                 ) : (
-                  <AlertTriangle className="w-5 h-5 text-kg-danger" />
+                  <AlertTriangle className="w-5 h-5 text-v-danger" />
                 )}
                 <span className="text-sm font-semibold">
                   {result.gammaApprove
                     ? "Would APPROVE execution"
                     : "Would REJECT execution"}
                 </span>
-                <span className="text-xs text-kg-text-secondary font-mono ml-auto">
+                <span className="text-xs text-v-text-secondary font-mono ml-auto">
                   {(result.gammaConfidence * 100).toFixed(0)}% confidence
                 </span>
               </div>
-              <p className="text-sm text-kg-text-secondary">
+              <p className="text-sm text-v-text-secondary">
                 {result.gammaReasoning}
               </p>
             </div>

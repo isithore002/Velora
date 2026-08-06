@@ -42,9 +42,9 @@ export default function DashboardPage() {
   }, [setThreats, setConnectionStatus]);
 
   return (
-    <div className="min-h-screen bg-kg-base flex flex-col">
+    <div className="min-h-screen bg-v-base flex flex-col">
       {/* Top Navigation Bar */}
-      <header className="glass sticky top-0 z-50 border-b border-kg-border/50">
+      <header className="glass sticky top-0 z-50 border-b border-v-border/50">
         <div className="max-w-[1600px] mx-auto px-6 h-16 flex items-center justify-between">
           {/* Logo + Live Indicator */}
           <div className="flex items-center gap-4">
@@ -53,26 +53,25 @@ export default function DashboardPage() {
                 <Radio
                   className={`w-4 h-4 ${
                     connectionStatus === "connected"
-                      ? "text-kg-danger"
-                      : "text-kg-text-secondary"
+                      ? "text-v-danger"
+                      : "text-v-text-secondary"
                   }`}
                 />
                 {connectionStatus === "connected" && (
-                  <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-kg-danger rounded-full live-pulse" />
+                  <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-v-danger rounded-full live-pulse" />
                 )}
               </div>
-              <span className="text-xs font-medium text-kg-text-secondary uppercase tracking-wider">
+              <span className="text-xs font-medium text-v-text-secondary uppercase tracking-wider">
                 {connectionStatus === "connected" ? "LIVE" : "OFFLINE"}
               </span>
             </div>
 
-            <div className="h-6 w-px bg-kg-border" />
+            <div className="h-6 w-px bg-v-border" />
 
             <h1 className="text-xl font-bold tracking-tight">
-              <span className="bg-gradient-to-r from-kg-info to-emerald-400 bg-clip-text text-transparent">
-                Keeper
+              <span className="bg-gradient-to-r from-v-accent to-v-info bg-clip-text text-transparent">
+                Velora
               </span>
-              <span className="text-kg-text">Guard</span>
             </h1>
           </div>
 
@@ -91,8 +90,8 @@ export default function DashboardPage() {
                     transition-all duration-200 cursor-pointer
                     ${
                       isActive
-                        ? "bg-kg-elevated text-kg-text shadow-lg shadow-kg-info/5"
-                        : "text-kg-text-secondary hover:text-kg-text hover:bg-kg-surface"
+                        ? "bg-v-elevated text-v-text shadow-lg shadow-v-info/5"
+                        : "text-v-text-secondary hover:text-v-text hover:bg-v-surface"
                     }
                   `}
                 >
@@ -105,12 +104,12 @@ export default function DashboardPage() {
 
           {/* Status */}
           <div className="flex items-center gap-3">
-            <div className="text-xs text-kg-text-secondary font-mono">
+            <div className="text-xs text-v-text-secondary font-mono">
               Chain: Base (8453)
             </div>
             <div
               className={`w-2 h-2 rounded-full ${
-                connectionStatus === "connected" ? "bg-kg-safe" : "bg-kg-danger"
+                connectionStatus === "connected" ? "bg-v-safe" : "bg-v-danger"
               }`}
             />
           </div>
