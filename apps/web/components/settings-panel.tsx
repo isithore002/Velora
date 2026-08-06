@@ -35,7 +35,7 @@ export function SettingsPanel() {
       <h2 className="text-lg font-semibold text-v-text">Configuration</h2>
 
       {/* Connection Status */}
-      <div className="bg-v-surface rounded-xl border border-v-border p-5">
+      <div className="bg-v-surface/80 backdrop-blur-xl rounded-2xl border border-v-border p-5 shadow-[0_0_20px_rgba(255,255,255,0.02)]">
         <h3 className="text-sm font-semibold text-v-text-secondary uppercase tracking-wider mb-4">
           KeeperHub Connection
         </h3>
@@ -57,7 +57,7 @@ export function SettingsPanel() {
       </div>
 
       {/* Threshold */}
-      <div className="bg-v-surface rounded-xl border border-v-border p-5">
+      <div className="bg-v-surface/80 backdrop-blur-xl rounded-2xl border border-v-border p-5 shadow-[0_0_20px_rgba(255,255,255,0.02)]">
         <h3 className="text-sm font-semibold text-v-text-secondary uppercase tracking-wider mb-4">
           Gamma Threshold
         </h3>
@@ -85,7 +85,7 @@ export function SettingsPanel() {
       </div>
 
       {/* Heuristic Weights */}
-      <div className="bg-v-surface rounded-xl border border-v-border p-5">
+      <div className="bg-v-surface/80 backdrop-blur-xl rounded-2xl border border-v-border p-5 shadow-[0_0_20px_rgba(255,255,255,0.02)]">
         <h3 className="text-sm font-semibold text-v-text-secondary uppercase tracking-wider mb-4">
           Heuristic Weights
         </h3>
@@ -125,7 +125,7 @@ export function SettingsPanel() {
       </div>
 
       {/* Wallet Addresses */}
-      <div className="bg-v-surface rounded-xl border border-v-border p-5 space-y-4">
+      <div className="bg-v-surface/80 backdrop-blur-xl rounded-2xl border border-v-border p-5 space-y-4 shadow-[0_0_20px_rgba(255,255,255,0.02)]">
         <h3 className="text-sm font-semibold text-v-text-secondary uppercase tracking-wider">
           Wallet Addresses
         </h3>
@@ -166,10 +166,10 @@ export function SettingsPanel() {
         id="settings-save-btn"
         onClick={handleSave}
         className={cn(
-          "flex items-center gap-2 px-6 py-3 rounded-lg font-medium text-sm transition-all cursor-pointer",
+          "flex items-center gap-2 px-8 py-3 rounded-full font-bold text-sm transition-all cursor-pointer border",
           saved
-            ? "bg-v-safe text-white"
-            : "bg-v-info text-white hover:bg-v-info/90"
+            ? "border-v-safe bg-v-safe/10 text-v-safe shadow-[0_0_15px_rgba(16,185,129,0.2)]"
+            : "border-white text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]"
         )}
       >
         {saved ? (

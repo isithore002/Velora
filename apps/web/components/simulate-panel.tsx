@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Play, Loader2, AlertTriangle, CheckCircle } from "lucide-react";
-import { cn, getThreatBadge, getThreatEmoji } from "../lib/utils";
+import { cn, getThreatBadge } from "../lib/utils";
 
 type SimResult = {
   riskScore: number;
@@ -64,7 +64,7 @@ export function SimulatePanel() {
       </div>
 
       {/* Input */}
-      <div className="bg-v-surface rounded-xl border border-v-border p-6 space-y-4">
+      <div className="bg-v-surface/80 backdrop-blur-xl rounded-2xl border border-v-border p-6 space-y-4 shadow-[0_0_20px_rgba(255,255,255,0.02)]">
         <label
           htmlFor="sim-tx-hash"
           className="text-sm font-medium text-v-text-secondary"
@@ -85,8 +85,8 @@ export function SimulatePanel() {
             onClick={runSimulation}
             disabled={isRunning || !txHash.trim()}
             className={cn(
-              "flex items-center gap-2 px-6 py-3 rounded-lg font-medium text-sm transition-all",
-              "bg-v-info text-white hover:bg-v-info/90 disabled:opacity-40 disabled:cursor-not-allowed",
+              "flex items-center gap-2 px-8 py-3 rounded-full font-bold text-sm transition-all border",
+              "border-white text-white hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] disabled:opacity-40 disabled:cursor-not-allowed",
               "cursor-pointer"
             )}
           >
@@ -119,7 +119,7 @@ export function SimulatePanel() {
 
       {/* Results */}
       {result && (
-        <div className="bg-v-surface rounded-xl border border-v-border p-6 space-y-6 animate-fade-in">
+        <div className="bg-v-surface/80 backdrop-blur-xl rounded-2xl border border-v-border p-6 space-y-6 animate-fade-in shadow-[0_0_20px_rgba(255,255,255,0.02)]">
           {/* Score Header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -144,7 +144,7 @@ export function SimulatePanel() {
                     getThreatBadge(result.threatLevel)
                   )}
                 >
-                  {getThreatEmoji(result.threatLevel)} {result.threatLevel.toUpperCase()}
+                  {result.threatLevel.toUpperCase()}
                 </span>
                 <p className="text-sm text-v-text-secondary mt-1">
                   Proposed: {result.proposedAction.replace(/_/g, " ")}

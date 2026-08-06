@@ -54,9 +54,9 @@ export function StatsCards() {
             key={card.id}
             id={card.id}
             className={`
-              relative overflow-hidden rounded-xl border ${card.borderColor}
-              bg-v-surface p-5 transition-all duration-300
-              hover:border-opacity-50 hover:shadow-lg
+              relative overflow-hidden rounded-2xl border ${card.borderColor}
+              bg-v-surface/80 backdrop-blur-xl p-5 transition-all duration-300
+              hover:border-opacity-100 hover:shadow-[0_0_20px_rgba(255,255,255,0.05)]
               animate-fade-in
             `}
             style={{ animationDelay: `${index * 100}ms` }}

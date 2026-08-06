@@ -42,7 +42,7 @@ export function AuditTimeline() {
             <div
               key={entry.id}
               id={`audit-entry-${index}`}
-              className="bg-v-surface rounded-xl border border-v-border p-6 animate-fade-in"
+              className="bg-v-surface/80 backdrop-blur-xl rounded-2xl border border-v-border p-6 animate-fade-in shadow-[0_0_20px_rgba(255,255,255,0.02)]"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               {/* Header */}

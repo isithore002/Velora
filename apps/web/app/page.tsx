@@ -42,7 +42,8 @@ export default function DashboardPage() {
   }, [setThreats, setConnectionStatus]);
 
   return (
-    <div className="min-h-screen bg-v-base flex flex-col">
+    <div className="min-h-screen bg-v-base flex flex-col relative overflow-hidden">
+      <div className="ambient-glow"></div>
       {/* Top Navigation Bar */}
       <header className="glass sticky top-0 z-50 border-b border-v-border/50">
         <div className="max-w-[1600px] mx-auto px-6 h-16 flex items-center justify-between">
@@ -68,8 +69,8 @@ export default function DashboardPage() {
 
             <div className="h-6 w-px bg-v-border" />
 
-            <h1 className="text-xl font-bold tracking-tight">
-              <span className="bg-gradient-to-r from-v-accent to-v-info bg-clip-text text-transparent">
+            <h1 className="text-2xl font-extrabold tracking-tight">
+              <span className="bg-gradient-to-r from-v-accent to-v-info bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(236,72,153,0.3)]">
                 Velora
               </span>
             </h1>
@@ -86,12 +87,12 @@ export default function DashboardPage() {
                   id={`nav-${item.id}`}
                   onClick={() => setActiveTab(item.id)}
                   className={`
-                    flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium
-                    transition-all duration-200 cursor-pointer
+                    flex items-center gap-2 px-5 py-2 rounded-full text-sm font-medium
+                    transition-all duration-300 cursor-pointer border
                     ${
                       isActive
-                        ? "bg-v-elevated text-v-text shadow-lg shadow-v-info/5"
-                        : "text-v-text-secondary hover:text-v-text hover:bg-v-surface"
+                        ? "bg-v-elevated border-white/20 text-v-text shadow-[0_0_20px_rgba(139,92,246,0.15)]"
+                        : "border-transparent text-v-text-secondary hover:text-v-text hover:bg-v-surface hover:border-white/10"
                     }
                   `}
                 >
@@ -117,7 +118,7 @@ export default function DashboardPage() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 max-w-[1600px] mx-auto w-full px-6 py-6">
+      <main className="flex-1 max-w-[1600px] mx-auto w-full px-6 py-6 relative z-10">
         {/* Stats Cards (always visible) */}
         <StatsCards />
 

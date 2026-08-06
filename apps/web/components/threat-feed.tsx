@@ -31,7 +31,7 @@ export function ThreatFeed() {
       </div>
 
       {/* Table */}
-      <div className="rounded-xl border border-v-border bg-v-surface overflow-hidden">
+      <div className="rounded-2xl border border-v-border bg-v-surface/80 backdrop-blur-xl overflow-hidden shadow-[0_0_20px_rgba(255,255,255,0.02)]">
         {/* Header */}
         <div className="grid grid-cols-[100px_140px_80px_100px_130px_120px_100px_60px] gap-2 px-4 py-3 bg-v-elevated/50 border-b border-v-border text-xs font-medium text-v-text-secondary uppercase tracking-wider">
           <span>Time</span>
