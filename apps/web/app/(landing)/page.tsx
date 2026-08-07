@@ -1,10 +1,10 @@
 import React from "react";
-import { Scene } from "@/components/landing/scene";
-import { Navbar } from "@/components/landing/navbar";
-import { HeroSection } from "@/components/landing/hero-section";
-import { HowItWorks } from "@/components/landing/how-it-works";
-import { AuditPreview } from "@/components/landing/audit-preview";
-import { Footer } from "@/components/landing/footer";
+import { Scene } from "@components/landing/scene";
+import { Navbar } from "@components/landing/navbar";
+import { HeroSection } from "@components/landing/hero-section";
+import { HowItWorks } from "@components/landing/how-it-works";
+import { AuditPreview } from "@components/landing/audit-preview";
+import { Footer } from "@components/landing/footer";
 
 export default function LandingPage() {
   return (
