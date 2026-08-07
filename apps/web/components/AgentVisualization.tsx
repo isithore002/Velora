@@ -247,15 +247,18 @@ export function AgentVisualization({ currentEvent }: VisualizationProps) {
         <color attach="background" args={["#050505"]} />
         <fog attach="fog" args={["#050505", 10, 25]} />
         
-        <ambientLight intensity={0.2} />
-        {/* Spotlight on the center */}
-        <spotLight 
-          position={[0, 10, 0]} 
+        <ambientLight intensity={0.7} />
+        {/* Main directional light */}
+        <directionalLight 
+          position={[5, 10, 5]} 
           intensity={2} 
-          angle={0.6} 
-          penumbra={1} 
           castShadow 
           shadow-bias={-0.0001}
+        />
+        {/* Fill light from the other side to illuminate shadows */}
+        <directionalLight 
+          position={[-10, 10, -10]} 
+          intensity={1} 
         />
         
         {/* Glowing Base Grid */}
