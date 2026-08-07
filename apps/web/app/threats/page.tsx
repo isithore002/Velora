@@ -177,12 +177,12 @@ export default function DashboardPage() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 max-w-[1600px] mx-auto w-full px-6 py-6 relative z-10 flex flex-col gap-6 min-h-[calc(100vh-64px)]">
+      <main className="flex-1 max-w-[1600px] mx-auto w-full px-6 py-6 relative z-10 flex flex-col gap-6">
         
         {/* Stats Cards (always visible) */}
         <StatsCards />
 
-        <div className="flex flex-col lg:flex-row gap-6 flex-1 min-h-[650px]">
+        <div className="flex flex-col lg:flex-row gap-6 h-[650px] w-full">
           {/* Left Half: 3D Visualization */}
           <div className="w-full lg:w-1/2 h-full rounded-none border border-v-border overflow-hidden relative">
             <AgentVisualization currentEvent={latestEvent} />
