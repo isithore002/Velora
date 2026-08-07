@@ -128,7 +128,7 @@ export default function DashboardPage() {
             <div className="h-6 w-px bg-v-border" />
 
             <div className="flex items-center gap-2">
-              <Image src="/logo.png" alt="Velora Logo" width={28} height={28} className="object-contain" />
+              <Image src="/logo.svg" alt="Velora Logo" width={28} height={28} className="object-contain" />
               <h1 className="text-2xl font-extrabold tracking-tight text-v-text">
                 Velora
               </h1>

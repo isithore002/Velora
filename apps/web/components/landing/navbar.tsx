@@ -7,7 +7,7 @@ export function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 bg-black border-b border-v-border">
       <div className="flex items-center gap-2">
-        <Image src="/logo.png" alt="Velora Logo" width={28} height={28} className="object-contain" />
+        <Image src="/logo.svg" alt="Velora Logo" width={28} height={28} className="object-contain" />
         <span className="font-mono text-xl font-bold tracking-tight text-slate-50">Velora</span>
       </div>
       
