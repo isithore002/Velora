@@ -89,17 +89,41 @@ export class KeeperHubClient {
   ): Promise<string> {
     if (this.mockMode) {
       const workflowId = `wf_mock_${Date.now()}`;
-      this.log("POST", "/workflows", "success", 50, workflowId);
+      this.log("POST", "/workflows/create", "success", 50, workflowId);
       return workflowId;
     }
 
-    const response = await this.fetchWithRetry("POST", "/workflows", {
+    const nodes = [
+      {
+        id: "trigger",
+        type: "trigger",
+        data: { type: "trigger", config: { triggerType: definition.trigger } },
+        position: { x: 0, y: 0 }
+      },
+      ...definition.steps.map((step, index) => ({
+        id: `step-${index}`,
+        type: "action",
+        data: { type: "action", config: step },
+        position: { x: 272 + index * 272, y: 0 }
+      }))
+    ];
+
+    const edges = definition.steps.map((step, index) => ({
+      id: `edge-${index}`,
+      source: index === 0 ? "trigger" : `step-${index - 1}`,
+      target: `step-${index}`
+    }));
+
+    const response = await this.fetchWithRetry("POST", "/workflows/create", {
       orgId: this.orgId,
-      ...definition,
       name,
+      description: definition.description,
+      chain: definition.chain,
+      nodes,
+      edges,
     });
 
-    return (response as { workflowId: string }).workflowId;
+    return (response as { id: string }).id;
   }
 
   /**
@@ -118,13 +142,13 @@ export class KeeperHubClient {
         gasUsed: Math.floor(Math.random() * 100000) + 21000,
         timestamp: Date.now(),
       };
-      this.log("POST", `/workflows/${workflowId}/trigger`, "success", 120, workflowId);
+      this.log("POST", `/workflows/${workflowId}/execute`, "success", 120, workflowId);
       return result;
     }
 
     const response = await this.fetchWithRetry(
       "POST",
-      `/workflows/${workflowId}/trigger`,
+      `/workflows/${workflowId}/execute`,
       { inputs }
     );
 
