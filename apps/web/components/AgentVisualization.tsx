@@ -34,17 +34,17 @@ const Robot = ({ position, color, label, isActive, rotation = [0, 0, 0] }: any) 
     <group position={position} rotation={rotation} ref={groupRef}>
       {/* Torso */}
       <Box args={[1, 1.2, 0.8]} position={[0, 0.6, 0]} castShadow>
-        <meshStandardMaterial color="#222" metalness={0.8} roughness={0.2} />
+        <meshStandardMaterial color="#c0c5ce" metalness={0.7} roughness={0.3} />
       </Box>
       
       {/* Neck */}
       <Cylinder args={[0.2, 0.2, 0.4]} position={[0, 1.3, 0]}>
-        <meshStandardMaterial color="#111" />
+        <meshStandardMaterial color="#8892b0" />
       </Cylinder>
 
       {/* Head */}
       <Box ref={headRef} args={[0.9, 0.7, 0.9]} position={[0, 1.6, 0]} castShadow>
-        <meshStandardMaterial color="#333" metalness={0.6} roughness={0.4} />
+        <meshStandardMaterial color="#e2e8f0" metalness={0.5} roughness={0.4} />
         {/* Eye Visor */}
         <Box args={[0.7, 0.2, 0.1]} position={[0, 0.1, 0.46]}>
           <meshStandardMaterial 
@@ -57,11 +57,11 @@ const Robot = ({ position, color, label, isActive, rotation = [0, 0, 0] }: any) 
 
       {/* Left Arm */}
       <Box args={[0.3, 1.2, 0.3]} position={[-0.7, 0.6, 0]}>
-        <meshStandardMaterial color="#222" metalness={0.8} />
+        <meshStandardMaterial color="#a0aec0" metalness={0.8} />
       </Box>
       {/* Right Arm */}
       <Box args={[0.3, 1.2, 0.3]} position={[0.7, 0.6, 0]}>
-        <meshStandardMaterial color="#222" metalness={0.8} />
+        <meshStandardMaterial color="#a0aec0" metalness={0.8} />
       </Box>
 
       {/* Label */}
@@ -103,7 +103,7 @@ const KeeperHubBuilding = ({ position, isActive }: any) => {
     <group position={position} ref={buildingRef}>
       {/* Main Structure */}
       <Box args={[2.5, 4, 2.5]} position={[0, 2, 0]} castShadow receiveShadow>
-        <meshStandardMaterial color="#0a0a0a" metalness={0.9} roughness={0.1} />
+        <meshStandardMaterial color="#1e293b" metalness={0.7} roughness={0.2} />
       </Box>
       
       {/* Wireframe overlay for tech look */}
