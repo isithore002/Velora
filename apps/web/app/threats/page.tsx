@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Shield, Activity, Search, Settings, Radio } from "lucide-react";
+import Image from "next/image";
 import { useAppStore } from "@lib/store";
 import { ThreatFeed } from "@components/threat-feed";
 import { AuditTimeline } from "@components/audit-timeline";
@@ -126,9 +127,12 @@ export default function DashboardPage() {
 
             <div className="h-6 w-px bg-v-border" />
 
-            <h1 className="text-2xl font-extrabold tracking-tight text-v-text">
-              Velora
-            </h1>
+            <div className="flex items-center gap-2">
+              <Image src="/logo.png" alt="Velora Logo" width={28} height={28} className="object-contain" />
+              <h1 className="text-2xl font-extrabold tracking-tight text-v-text">
+                Velora
+              </h1>
+            </div>
           </div>
 
           {/* Tab Navigation */}
