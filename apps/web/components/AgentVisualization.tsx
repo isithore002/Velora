@@ -103,7 +103,7 @@ const KeeperHubBuilding = ({ position, isActive }: any) => {
     <group position={position} ref={buildingRef}>
       {/* Main Structure */}
       <Box args={[2.5, 4, 2.5]} position={[0, 2, 0]} castShadow receiveShadow>
-        <meshStandardMaterial color="#1e293b" metalness={0.7} roughness={0.2} />
+        <meshStandardMaterial color="#c0c5ce" metalness={0.7} roughness={0.2} />
       </Box>
       
       {/* Wireframe overlay for tech look */}
