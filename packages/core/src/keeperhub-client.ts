@@ -152,7 +152,11 @@ export class KeeperHubClient {
       { inputs }
     );
 
-    return response as ExecutionResult;
+    return {
+      ...(response as Record<string, unknown>),
+      workflowId,
+      timestamp: Date.now(),
+    } as ExecutionResult;
   }
 
   /**
