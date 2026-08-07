@@ -9,16 +9,16 @@ module.exports = {
     extend: {
       colors: {
         "v-base": "#000000",
-        "v-surface": "#0a0a0a",
-        "v-elevated": "#111111",
-        "v-border": "#222222",
-        "v-text": "#ffffff",
-        "v-text-secondary": "#a1a1aa",
-        "v-safe": "#10b981",
-        "v-warn": "#f59e0b",
-        "v-danger": "#f43f5e",
-        "v-info": "#8b5cf6",
-        "v-accent": "#ec4899",
+        "v-surface": "#000000",
+        "v-elevated": "#000000",
+        "v-border": "#166534", // green-800
+        "v-text": "#4ade80", // green-400
+        "v-text-secondary": "#22c55e", // green-500
+        "v-safe": "#4ade80",
+        "v-warn": "#facc15",
+        "v-danger": "#ef4444",
+        "v-info": "#06b6d4",
+        "v-accent": "#22c55e",
         "v-cyan": "#06b6d4",
       },
       fontFamily: {

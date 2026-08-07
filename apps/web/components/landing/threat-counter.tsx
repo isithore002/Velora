@@ -12,7 +12,7 @@ export function ThreatCounter() {
   }, []);
 
   return (
-    <div className="inline-flex items-center gap-2 px-4 py-2 mt-8 border rounded-full bg-slate-900/50 border-slate-800 backdrop-blur-sm">
+    <div className="inline-flex items-center gap-2 px-4 py-2 mt-8 border rounded-none bg-black border-v-border">
       <div className="relative flex items-center justify-center w-2 h-2">
         <span className="absolute inline-flex w-full h-full rounded-full opacity-75 animate-ping bg-emerald-400"></span>
         <span className="relative inline-flex w-2 h-2 rounded-full bg-emerald-500"></span>

@@ -5,7 +5,7 @@ import { Button } from "@components/ui/button";
 
 export function Navbar() {
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 bg-slate-950/50 backdrop-blur-md border-b border-slate-800">
+    <nav className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4 bg-black border-b border-v-border">
       <div className="flex items-center gap-2">
         <ShieldCheck className="w-6 h-6 text-emerald-500" />
         <span className="font-mono text-xl font-bold tracking-tight text-slate-50">Velora</span>

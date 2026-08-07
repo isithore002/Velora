@@ -21,12 +21,12 @@ export function ThreatDetail() {
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
+        className="fixed inset-0 bg-black/80 z-40"
         onClick={() => selectThreat(null)}
       />
 
       {/* Slide-over Panel */}
-      <div className="fixed right-0 top-0 bottom-0 w-full max-w-xl bg-v-surface/90 backdrop-blur-2xl border-l border-white/5 shadow-[-20px_0_40px_rgba(0,0,0,0.5)] z-50 overflow-y-auto animate-slide-in">
+      <div className="fixed right-0 top-0 bottom-0 w-full max-w-xl bg-v-surface border-l border-v-border shadow-[-20px_0_40px_rgba(0,0,0,0.8)] z-50 overflow-y-auto animate-slide-in">
         {/* Header */}
         <div className="sticky top-0 glass border-b border-v-border p-4 flex items-center justify-between z-10">
           <div className="flex items-center gap-3">

@@ -64,7 +64,7 @@ export function SimulatePanel() {
       </div>
 
       {/* Input */}
-      <div className="bg-v-surface/80 backdrop-blur-xl rounded-none border border-v-border p-6 space-y-4 shadow-[0_0_20px_rgba(255,255,255,0.02)]">
+      <div className="bg-v-surface rounded-none border border-v-border p-6 space-y-4 shadow-[0_0_20px_rgba(255,255,255,0.02)]">
         <label
           htmlFor="sim-tx-hash"
           className="text-sm font-medium text-v-text-secondary"
@@ -119,7 +119,7 @@ export function SimulatePanel() {
 
       {/* Results */}
       {result && (
-        <div className="bg-v-surface/80 backdrop-blur-xl rounded-none border border-v-border p-6 space-y-6 animate-fade-in shadow-[0_0_20px_rgba(255,255,255,0.02)]">
+        <div className="bg-v-surface rounded-none border border-v-border p-6 space-y-6 animate-fade-in shadow-[0_0_20px_rgba(255,255,255,0.02)]">
           {/* Score Header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">

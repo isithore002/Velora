@@ -19,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.variable} ${jetbrains.variable} bg-v-base text-v-text antialiased min-h-screen font-sans`}>
+      <body className={`${inter.variable} ${jetbrains.variable} bg-v-base text-v-text antialiased min-h-screen font-mono uppercase`}>
         {children}
       </body>
     </html>

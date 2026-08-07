@@ -35,7 +35,7 @@ export function SettingsPanel() {
       <h2 className="text-lg font-semibold text-v-text">Configuration</h2>
 
       {/* Connection Status */}
-      <div className="bg-v-surface/80 backdrop-blur-xl rounded-none border border-v-border p-5 shadow-[0_0_20px_rgba(255,255,255,0.02)]">
+      <div className="bg-v-surface rounded-none border border-v-border p-5 shadow-[0_0_20px_rgba(255,255,255,0.02)]">
         <h3 className="text-sm font-semibold text-v-text-secondary uppercase tracking-wider mb-4">
           KeeperHub Connection
         </h3>
@@ -57,7 +57,7 @@ export function SettingsPanel() {
       </div>
 
       {/* Threshold */}
-      <div className="bg-v-surface/80 backdrop-blur-xl rounded-none border border-v-border p-5 shadow-[0_0_20px_rgba(255,255,255,0.02)]">
+      <div className="bg-v-surface rounded-none border border-v-border p-5 shadow-[0_0_20px_rgba(255,255,255,0.02)]">
         <h3 className="text-sm font-semibold text-v-text-secondary uppercase tracking-wider mb-4">
           Judge Threshold
         </h3>
@@ -85,7 +85,7 @@ export function SettingsPanel() {
       </div>
 
       {/* Heuristic Weights */}
-      <div className="bg-v-surface/80 backdrop-blur-xl rounded-none border border-v-border p-5 shadow-[0_0_20px_rgba(255,255,255,0.02)]">
+      <div className="bg-v-surface rounded-none border border-v-border p-5 shadow-[0_0_20px_rgba(255,255,255,0.02)]">
         <h3 className="text-sm font-semibold text-v-text-secondary uppercase tracking-wider mb-4">
           Heuristic Weights
         </h3>
@@ -125,7 +125,7 @@ export function SettingsPanel() {
       </div>
 
       {/* Wallet Addresses */}
-      <div className="bg-v-surface/80 backdrop-blur-xl rounded-none border border-v-border p-5 space-y-4 shadow-[0_0_20px_rgba(255,255,255,0.02)]">
+      <div className="bg-v-surface rounded-none border border-v-border p-5 space-y-4 shadow-[0_0_20px_rgba(255,255,255,0.02)]">
         <h3 className="text-sm font-semibold text-v-text-secondary uppercase tracking-wider">
           Wallet Addresses
         </h3>

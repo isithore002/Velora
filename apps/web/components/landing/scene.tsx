@@ -12,8 +12,8 @@ function ParticleSystem({ count = 200 }) {
   const { positions, colors } = useMemo(() => {
     const pos = new Float32Array(count * 3);
     const col = new Float32Array(count * 3);
-    const colorA = new THREE.Color("#10b981"); // emerald-400 (safe)
-    const colorB = new THREE.Color("#f43f5e"); // rose-500 (threat)
+    const colorA = new THREE.Color("#166534"); // green-800
+    const colorB = new THREE.Color("#4ade80"); // green-400
     const tempColor = new THREE.Color();
     
     // Torus parameters
@@ -46,10 +46,10 @@ function ParticleSystem({ count = 200 }) {
   useEffect(() => {
     if (meshRef.current) {
       for (let i = 0; i < count; i++) {
-        dummy.position.set(positions[i * 3], positions[i * 3 + 1], positions[i * 3 + 2]);
+        dummy.position.set(positions[i * 3]!, positions[i * 3 + 1]!, positions[i * 3 + 2]!);
         dummy.updateMatrix();
         meshRef.current.setMatrixAt(i, dummy.matrix);
-        meshRef.current.setColorAt(i, new THREE.Color(colors[i * 3], colors[i * 3 + 1], colors[i * 3 + 2]));
+        meshRef.current.setColorAt(i, new THREE.Color(colors[i * 3]!, colors[i * 3 + 1]!, colors[i * 3 + 2]!));
       }
       meshRef.current.instanceMatrix.needsUpdate = true;
       if (meshRef.current.instanceColor) meshRef.current.instanceColor.needsUpdate = true;
@@ -87,7 +87,7 @@ function Icosahedron() {
   return (
     <lineSegments ref={meshRef}>
       <edgesGeometry args={[new THREE.IcosahedronGeometry(1.5, 0)]} />
-      <lineBasicMaterial color="#94a3b8" transparent opacity={0.15} />
+      <lineBasicMaterial color="#22c55e" transparent opacity={0.3} />
     </lineSegments>
   );
 }
@@ -149,7 +149,7 @@ function Ripple({ position, createdAt }: { position: THREE.Vector3; createdAt: n
   return (
     <mesh ref={meshRef} position={position}>
       <ringGeometry args={[0.1, 0.12, 32]} />
-      <meshBasicMaterial color="#f43f5e" transparent opacity={1} side={THREE.DoubleSide} />
+      <meshBasicMaterial color="#4ade80" transparent opacity={1} side={THREE.DoubleSide} />
     </mesh>
   );
 }
@@ -183,7 +183,7 @@ export function Scene() {
   return (
     <div className="fixed inset-0 z-0 pointer-events-none">
       <Canvas camera={{ position: [0, 0, 7], fov: 60 }} gl={{ alpha: true, antialias: false }}>
-        <fog attach="fog" args={["#020617", 5, 20]} />
+        <fog attach="fog" args={["#000000", 5, 20]} />
         <CameraRig />
         <Icosahedron />
         <ParticleSystem count={isMobile ? 50 : 200} />
