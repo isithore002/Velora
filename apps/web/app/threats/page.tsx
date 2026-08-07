@@ -177,20 +177,29 @@ export default function DashboardPage() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 max-w-[1600px] mx-auto w-full px-6 py-6 relative z-10 flex flex-col gap-6">
+      <main className="flex-1 max-w-[1600px] mx-auto w-full px-6 py-6 relative z-10 flex flex-col gap-6 min-h-[calc(100vh-64px)]">
         
-        {/* 3D Visualization */}
-        <AgentVisualization currentEvent={latestEvent} />
-
         {/* Stats Cards (always visible) */}
         <StatsCards />
 
-        {/* Tab Content */}
-        <div className="mt-6">
-          {activeTab === "threats" && <ThreatFeed />}
-          {activeTab === "audit" && <AuditTimeline />}
-          {activeTab === "simulate" && <SimulatePanel />}
-          {activeTab === "settings" && <SettingsPanel />}
+        <div className="flex flex-col lg:flex-row gap-6 flex-1 min-h-[650px]">
+          {/* Left Half: 3D Visualization */}
+          <div className="w-full lg:w-1/2 h-full rounded-none border border-v-border overflow-hidden relative">
+            <AgentVisualization currentEvent={latestEvent} />
+          </div>
+
+          {/* Right Half: Tab Content */}
+          <div className="w-full lg:w-1/2 h-full flex flex-col rounded-none border border-v-border bg-v-surface overflow-hidden relative">
+            {activeTab === "audit" ? (
+              <AuditTimeline />
+            ) : (
+              <div className="flex-1 overflow-y-auto p-4 custom-scrollbar">
+                {activeTab === "threats" && <ThreatFeed />}
+                {activeTab === "simulate" && <SimulatePanel />}
+                {activeTab === "settings" && <SettingsPanel />}
+              </div>
+            )}
+          </div>
         </div>
       </main>
 

@@ -235,7 +235,7 @@ export function AgentVisualization({ currentEvent }: VisualizationProps) {
   const posKeeperHub: [number, number, number] = [4, 0, 0];
 
   return (
-    <div className="w-full h-[450px] bg-black/80 rounded-none border border-v-border/50 overflow-hidden relative shadow-[0_0_50px_rgba(0,0,0,0.5)_inset]">
+    <div className="w-full h-full bg-black/80 rounded-none border border-v-border/50 overflow-hidden relative shadow-[0_0_50px_rgba(0,0,0,0.5)_inset]">
       <div className="absolute top-4 left-4 z-10 flex items-center gap-2 bg-black/40 px-3 py-1.5 rounded-full border border-white/10 backdrop-blur-sm">
         <div className={`w-2 h-2 rounded-full ${activeNode ? 'bg-v-danger live-pulse' : 'bg-v-safe'}`} />
         <span className="text-xs font-bold text-white/80 uppercase tracking-widest">
