@@ -102,17 +102,15 @@ export default function DashboardPage() {
             
             <button
               onClick={handleSimulateAttack}
-              className="bg-v-danger/20 hover:bg-v-danger/30 text-v-danger px-3 py-1 rounded text-xs font-bold tracking-wider uppercase border border-v-danger/40 transition-colors shadow-[0_0_10px_rgba(239,68,68,0.2)]"
+              className="bg-v-surface hover:bg-v-elevated text-v-text px-3 py-1 rounded text-xs font-bold tracking-wider uppercase border border-v-border transition-colors"
             >
               Simulate Attack
             </button>
 
             <div className="h-6 w-px bg-v-border" />
 
-            <h1 className="text-2xl font-extrabold tracking-tight">
-              <span className="bg-gradient-to-r from-v-accent to-v-info bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(236,72,153,0.3)]">
-                Velora
-              </span>
+            <h1 className="text-2xl font-extrabold tracking-tight text-v-text">
+              Velora
             </h1>
           </div>
 
@@ -131,8 +129,8 @@ export default function DashboardPage() {
                     transition-all duration-300 cursor-pointer border
                     ${
                       isActive
-                        ? "bg-v-elevated border-white/20 text-v-text shadow-[0_0_20px_rgba(139,92,246,0.15)]"
-                        : "border-transparent text-v-text-secondary hover:text-v-text hover:bg-v-surface hover:border-white/10"
+                        ? "bg-v-elevated border-v-border text-v-text shadow-sm"
+                        : "border-transparent text-v-text-secondary hover:text-v-text hover:bg-v-surface"
                     }
                   `}
                 >
