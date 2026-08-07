@@ -9,6 +9,7 @@ import { SimulatePanel } from "../components/simulate-panel";
 import { SettingsPanel } from "../components/settings-panel";
 import { StatsCards } from "../components/stats-cards";
 import { ThreatDetail } from "../components/threat-detail";
+import { AgentVisualization } from "../components/AgentVisualization";
 
 type Tab = "threats" | "audit" | "simulate" | "settings";
 
@@ -22,6 +23,7 @@ const NAV_ITEMS: Array<{ id: Tab; label: string; icon: typeof Shield }> = [
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState<Tab>("threats");
   const [ws, setWs] = useState<WebSocket | null>(null);
+  const [latestEvent, setLatestEvent] = useState<any>(null);
   const { setThreats, connectionStatus, setConnectionStatus, selectedThreat } =
     useAppStore();
 
@@ -51,6 +53,7 @@ export default function DashboardPage() {
         if (data.type === "INIT") {
           setThreats(data.entries);
         } else if (data.type === "UPDATE") {
+          setLatestEvent(data.entry);
           const exists = store.threats.some((t) => t.id === data.entry.id);
           if (exists) {
             store.updateThreat(data.entry.id, data.entry);
@@ -170,7 +173,11 @@ export default function DashboardPage() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 max-w-[1600px] mx-auto w-full px-6 py-6 relative z-10">
+      <main className="flex-1 max-w-[1600px] mx-auto w-full px-6 py-6 relative z-10 flex flex-col gap-6">
+        
+        {/* 3D Visualization */}
+        <AgentVisualization currentEvent={latestEvent} />
+
         {/* Stats Cards (always visible) */}
         <StatsCards />
 
