@@ -42,7 +42,7 @@ export function AuditTimeline() {
             <div
               key={entry.id}
               id={`audit-entry-${index}`}
-              className="bg-v-surface/80 backdrop-blur-xl rounded-2xl border border-v-border p-6 animate-fade-in shadow-[0_0_20px_rgba(255,255,255,0.02)]"
+              className="bg-v-surface/80 backdrop-blur-xl rounded-none border border-v-border p-6 animate-fade-in shadow-[0_0_20px_rgba(255,255,255,0.02)]"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               {/* Header */}
@@ -121,7 +121,7 @@ export function AuditTimeline() {
               {/* Details */}
               <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
                 {/* Warden */}
-                <div className="bg-v-base rounded-lg p-4 border border-v-border">
+                <div className="bg-v-base rounded-none p-4 border border-v-border">
                   <h4 className="text-xs font-semibold text-v-info uppercase tracking-wider mb-2">
                     Warden
                   </h4>
@@ -139,7 +139,7 @@ export function AuditTimeline() {
                 </div>
 
                 {/* Judge */}
-                <div className="bg-v-base rounded-lg p-4 border border-v-border">
+                <div className="bg-v-base rounded-none p-4 border border-v-border">
                   <h4 className="text-xs font-semibold text-purple-400 uppercase tracking-wider mb-2">
                     Judge
                   </h4>
@@ -163,7 +163,7 @@ export function AuditTimeline() {
                 </div>
 
                 {/* Execution */}
-                <div className="bg-v-base rounded-lg p-4 border border-v-border">
+                <div className="bg-v-base rounded-none p-4 border border-v-border">
                   <h4 className="text-xs font-semibold text-v-warn uppercase tracking-wider mb-2">
                     Execution
                   </h4>

@@ -2,14 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { Shield, Activity, Search, Settings, Radio } from "lucide-react";
-import { useAppStore } from "../lib/store";
-import { ThreatFeed } from "../components/threat-feed";
-import { AuditTimeline } from "../components/audit-timeline";
-import { SimulatePanel } from "../components/simulate-panel";
-import { SettingsPanel } from "../components/settings-panel";
-import { StatsCards } from "../components/stats-cards";
-import { ThreatDetail } from "../components/threat-detail";
-import { AgentVisualization } from "../components/AgentVisualization";
+import { useAppStore } from "@lib/store";
+import { ThreatFeed } from "@components/threat-feed";
+import { AuditTimeline } from "@components/audit-timeline";
+import { SimulatePanel } from "@components/simulate-panel";
+import { SettingsPanel } from "@components/settings-panel";
+import { StatsCards } from "@components/stats-cards";
+import { ThreatDetail } from "@components/threat-detail";
+import { AgentVisualization } from "@components/AgentVisualization";
 
 type Tab = "threats" | "audit" | "simulate" | "settings";
 

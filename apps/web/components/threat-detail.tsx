@@ -45,7 +45,7 @@ export function ThreatDetail() {
           <button
             id="close-detail"
             onClick={() => selectThreat(null)}
-            className="p-2 hover:bg-v-elevated rounded-lg transition-colors cursor-pointer"
+            className="p-2 hover:bg-v-elevated rounded-none transition-colors cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
@@ -94,7 +94,7 @@ export function ThreatDetail() {
             <h3 className="text-sm font-semibold text-v-text-secondary uppercase tracking-wider flex items-center gap-2">
               <Shield className="w-4 h-4" /> Event Details
             </h3>
-            <div className="bg-v-base rounded-xl p-4 space-y-2 font-mono text-sm border border-v-border">
+            <div className="bg-v-base rounded-none p-4 space-y-2 font-mono text-sm border border-v-border">
               <DetailRow label="Tx Hash" value={entry.event.txHash} link />
               <DetailRow label="Chain" value={`${entry.event.chainId}`} />
               <DetailRow
@@ -124,7 +124,7 @@ export function ThreatDetail() {
             <h3 className="text-sm font-semibold text-v-text-secondary uppercase tracking-wider flex items-center gap-2">
               <Shield className="w-4 h-4 text-v-info" /> Warden Analysis
             </h3>
-            <div className="bg-v-base rounded-xl p-4 border border-v-border space-y-3">
+            <div className="bg-v-base rounded-none p-4 border border-v-border space-y-3">
               <div className="flex justify-between items-center">
                 <span className="text-sm text-v-text-secondary">
                   Proposed Action
@@ -142,7 +142,7 @@ export function ThreatDetail() {
                   {entry.alphaDecision.triggeredHeuristics.map((h, i) => (
                     <div
                       key={i}
-                      className="flex items-center justify-between bg-v-elevated rounded-lg px-3 py-2"
+                      className="flex items-center justify-between bg-v-elevated rounded-none px-3 py-2"
                     >
                       <span className="text-xs text-v-text">{h.name}</span>
                       <span className="text-xs font-bold text-v-warn">
@@ -163,7 +163,7 @@ export function ThreatDetail() {
               </h3>
               <div
                 className={cn(
-                  "rounded-xl p-4 border space-y-3",
+                  "rounded-none p-4 border space-y-3",
                   entry.gammaCritique.approve
                     ? "bg-v-safe/5 border-v-safe/20"
                     : "bg-v-danger/5 border-v-danger/20"
@@ -186,7 +186,7 @@ export function ThreatDetail() {
                   {entry.gammaCritique.reasoning}
                 </p>
                 {entry.gammaCritique.overrideAlpha && (
-                  <div className="bg-v-warn/10 border border-v-warn/30 rounded-lg px-3 py-2 text-xs text-v-warn flex items-center gap-1.5">
+                  <div className="bg-v-warn/10 border border-v-warn/30 rounded-none px-3 py-2 text-xs text-v-warn flex items-center gap-1.5">
                     <AlertTriangle className="w-3.5 h-3.5" /> Judge overrode Warden's decision → {entry.gammaCritique.suggestedAction.replace(/_/g, " ")}
                   </div>
                 )}
@@ -200,7 +200,7 @@ export function ThreatDetail() {
               <h3 className="text-sm font-semibold text-v-text-secondary uppercase tracking-wider flex items-center gap-2">
                 <Zap className="w-4 h-4 text-v-warn" /> KeeperHub Execution
               </h3>
-              <div className="bg-v-base rounded-xl p-4 border border-v-border space-y-2 font-mono text-sm">
+              <div className="bg-v-base rounded-none p-4 border border-v-border space-y-2 font-mono text-sm">
                 <DetailRow
                   label="Tx Hash"
                   value={formatAddress(entry.keeperhubTxHash)}

@@ -64,7 +64,7 @@ export function SimulatePanel() {
       </div>
 
       {/* Input */}
-      <div className="bg-v-surface/80 backdrop-blur-xl rounded-2xl border border-v-border p-6 space-y-4 shadow-[0_0_20px_rgba(255,255,255,0.02)]">
+      <div className="bg-v-surface/80 backdrop-blur-xl rounded-none border border-v-border p-6 space-y-4 shadow-[0_0_20px_rgba(255,255,255,0.02)]">
         <label
           htmlFor="sim-tx-hash"
           className="text-sm font-medium text-v-text-secondary"
@@ -78,7 +78,7 @@ export function SimulatePanel() {
             placeholder="0x..."
             value={txHash}
             onChange={(e) => setTxHash(e.target.value)}
-            className="flex-1 bg-v-base border border-v-border rounded-lg px-4 py-3 font-mono text-sm text-v-text placeholder:text-v-text-secondary/50 focus:outline-none focus:border-v-info/50 focus:ring-1 focus:ring-v-info/20 transition-all"
+            className="flex-1 bg-v-base border border-v-border rounded-none px-4 py-3 font-mono text-sm text-v-text placeholder:text-v-text-secondary/50 focus:outline-none focus:border-v-info/50 focus:ring-1 focus:ring-v-info/20 transition-all"
           />
           <button
             id="sim-run-btn"
@@ -119,7 +119,7 @@ export function SimulatePanel() {
 
       {/* Results */}
       {result && (
-        <div className="bg-v-surface/80 backdrop-blur-xl rounded-2xl border border-v-border p-6 space-y-6 animate-fade-in shadow-[0_0_20px_rgba(255,255,255,0.02)]">
+        <div className="bg-v-surface/80 backdrop-blur-xl rounded-none border border-v-border p-6 space-y-6 animate-fade-in shadow-[0_0_20px_rgba(255,255,255,0.02)]">
           {/* Score Header */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -163,7 +163,7 @@ export function SimulatePanel() {
                 result.heuristics.map((h, i) => (
                   <div
                     key={i}
-                    className="flex items-center justify-between bg-v-base rounded-lg px-4 py-3 border border-v-border"
+                    className="flex items-center justify-between bg-v-base rounded-none px-4 py-3 border border-v-border"
                   >
                     <div>
                       <span className="text-sm font-medium text-v-text">
@@ -179,7 +179,7 @@ export function SimulatePanel() {
                   </div>
                 ))
               ) : (
-                <div className="bg-v-base rounded-lg px-4 py-3 border border-v-border text-sm text-v-text-secondary">
+                <div className="bg-v-base rounded-none px-4 py-3 border border-v-border text-sm text-v-text-secondary">
                   No heuristics triggered
                 </div>
               )}
@@ -193,7 +193,7 @@ export function SimulatePanel() {
             </h3>
             <div
               className={cn(
-                "rounded-xl p-4 border",
+                "rounded-none p-4 border",
                 result.gammaApprove
                   ? "bg-v-safe/5 border-v-safe/20"
                   : "bg-v-danger/5 border-v-danger/20"

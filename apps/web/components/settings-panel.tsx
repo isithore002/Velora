@@ -35,7 +35,7 @@ export function SettingsPanel() {
       <h2 className="text-lg font-semibold text-v-text">Configuration</h2>
 
       {/* Connection Status */}
-      <div className="bg-v-surface/80 backdrop-blur-xl rounded-2xl border border-v-border p-5 shadow-[0_0_20px_rgba(255,255,255,0.02)]">
+      <div className="bg-v-surface/80 backdrop-blur-xl rounded-none border border-v-border p-5 shadow-[0_0_20px_rgba(255,255,255,0.02)]">
         <h3 className="text-sm font-semibold text-v-text-secondary uppercase tracking-wider mb-4">
           KeeperHub Connection
         </h3>
@@ -57,7 +57,7 @@ export function SettingsPanel() {
       </div>
 
       {/* Threshold */}
-      <div className="bg-v-surface/80 backdrop-blur-xl rounded-2xl border border-v-border p-5 shadow-[0_0_20px_rgba(255,255,255,0.02)]">
+      <div className="bg-v-surface/80 backdrop-blur-xl rounded-none border border-v-border p-5 shadow-[0_0_20px_rgba(255,255,255,0.02)]">
         <h3 className="text-sm font-semibold text-v-text-secondary uppercase tracking-wider mb-4">
           Judge Threshold
         </h3>
@@ -85,7 +85,7 @@ export function SettingsPanel() {
       </div>
 
       {/* Heuristic Weights */}
-      <div className="bg-v-surface/80 backdrop-blur-xl rounded-2xl border border-v-border p-5 shadow-[0_0_20px_rgba(255,255,255,0.02)]">
+      <div className="bg-v-surface/80 backdrop-blur-xl rounded-none border border-v-border p-5 shadow-[0_0_20px_rgba(255,255,255,0.02)]">
         <h3 className="text-sm font-semibold text-v-text-secondary uppercase tracking-wider mb-4">
           Heuristic Weights
         </h3>
@@ -125,7 +125,7 @@ export function SettingsPanel() {
       </div>
 
       {/* Wallet Addresses */}
-      <div className="bg-v-surface/80 backdrop-blur-xl rounded-2xl border border-v-border p-5 space-y-4 shadow-[0_0_20px_rgba(255,255,255,0.02)]">
+      <div className="bg-v-surface/80 backdrop-blur-xl rounded-none border border-v-border p-5 space-y-4 shadow-[0_0_20px_rgba(255,255,255,0.02)]">
         <h3 className="text-sm font-semibold text-v-text-secondary uppercase tracking-wider">
           Wallet Addresses
         </h3>
@@ -141,7 +141,7 @@ export function SettingsPanel() {
             type="text"
             value={localMonitored}
             onChange={(e) => setLocalMonitored((e.target as HTMLInputElement).value)}
-            className="w-full mt-1 bg-v-base border border-v-border rounded-lg px-4 py-2.5 font-mono text-sm text-v-text focus:outline-none focus:border-v-info/50"
+            className="w-full mt-1 bg-v-base border border-v-border rounded-none px-4 py-2.5 font-mono text-sm text-v-text focus:outline-none focus:border-v-info/50"
           />
         </div>
         <div>
@@ -156,7 +156,7 @@ export function SettingsPanel() {
             type="text"
             value={localCold}
             onChange={(e) => setLocalCold((e.target as HTMLInputElement).value)}
-            className="w-full mt-1 bg-v-base border border-v-border rounded-lg px-4 py-2.5 font-mono text-sm text-v-text focus:outline-none focus:border-v-info/50"
+            className="w-full mt-1 bg-v-base border border-v-border rounded-none px-4 py-2.5 font-mono text-sm text-v-text focus:outline-none focus:border-v-info/50"
           />
         </div>
       </div>

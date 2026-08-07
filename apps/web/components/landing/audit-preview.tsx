@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const terminalLines = [
   { time: "22:01:14", text: 'Alpha: Threat detected on 0x7a3...b2f (Score: 92/100)', color: "text-amber-400" },
   { time: "22:01:15", text: 'Gamma: Critiquing... "Unlimited USDC approval to unknown spender"', color: "text-blue-400" },
-  { time: "22:01:16", text: 'Gamma: ✅ APPROVED — Executing revocation', color: "text-emerald-400" },
+  { time: "22:01:16", text: 'Gamma: APPROVED — Executing revocation', color: "text-emerald-400" },
   { time: "22:01:18", text: 'KeeperHub: Tx confirmed — 0x8d...3e2 (Gas: 45,231)', color: "text-slate-300" },
 ];
 
@@ -42,7 +42,7 @@ export function AuditPreview() {
         </p>
       </div>
 
-      <div className="w-full p-4 overflow-hidden border shadow-2xl rounded-xl bg-slate-900 border-slate-800">
+      <div className="w-full p-4 overflow-hidden border shadow-2xl rounded-none bg-slate-900 border-slate-800">
         <div className="flex items-center gap-2 mb-4">
           <div className="w-3 h-3 rounded-full bg-rose-500/20 border border-rose-500/50"></div>
           <div className="w-3 h-3 rounded-full bg-amber-500/20 border border-amber-500/50"></div>

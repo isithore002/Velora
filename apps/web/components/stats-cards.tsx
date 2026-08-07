@@ -54,7 +54,7 @@ export function StatsCards() {
             key={card.id}
             id={card.id}
             className={`
-              relative overflow-hidden rounded-2xl border ${card.borderColor}
+              relative overflow-hidden rounded-none border ${card.borderColor}
               bg-v-surface/80 backdrop-blur-xl p-5 transition-all duration-300
               hover:border-opacity-100 hover:shadow-[0_0_20px_rgba(255,255,255,0.05)]
               animate-fade-in
@@ -66,7 +66,10 @@ export function StatsCards() {
               className={`absolute -top-8 -right-8 w-24 h-24 rounded-full ${card.bgColor} blur-2xl opacity-50`}
             />
 
-            <div className="relative flex items-center justify-between">
+            <div className="relative flex items-start gap-4">
+              <div className={`${card.bgColor} p-3 rounded-none shrink-0`}>
+                <Icon className={`w-6 h-6 ${card.color}`} />
+              </div>
               <div>
                 <p className="text-sm text-v-text-secondary font-medium">
                   {card.label}
@@ -74,9 +77,6 @@ export function StatsCards() {
                 <p className={`text-3xl font-bold mt-1 ${card.color}`}>
                   {card.value}
                 </p>
-              </div>
-              <div className={`${card.bgColor} p-3 rounded-xl`}>
-                <Icon className={`w-6 h-6 ${card.color}`} />
               </div>
             </div>
           </div>
