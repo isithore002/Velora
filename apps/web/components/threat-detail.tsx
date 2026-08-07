@@ -119,10 +119,10 @@ export function ThreatDetail() {
             </div>
           </section>
 
-          {/* Alpha Analysis */}
+          {/* Warden Analysis */}
           <section className="space-y-3">
             <h3 className="text-sm font-semibold text-v-text-secondary uppercase tracking-wider flex items-center gap-2">
-              <Shield className="w-4 h-4 text-v-info" /> Alpha Analysis
+              <Shield className="w-4 h-4 text-v-info" /> Warden Analysis
             </h3>
             <div className="bg-v-base rounded-xl p-4 border border-v-border space-y-3">
               <div className="flex justify-between items-center">
@@ -155,11 +155,11 @@ export function ThreatDetail() {
             </div>
           </section>
 
-          {/* Gamma Critique */}
+          {/* Judge Critique */}
           {entry.gammaCritique && (
             <section className="space-y-3">
               <h3 className="text-sm font-semibold text-v-text-secondary uppercase tracking-wider flex items-center gap-2">
-                <Brain className="w-4 h-4 text-purple-400" /> Gamma Critique
+                <Brain className="w-4 h-4 text-purple-400" /> Judge Critique
               </h3>
               <div
                 className={cn(
@@ -187,7 +187,7 @@ export function ThreatDetail() {
                 </p>
                 {entry.gammaCritique.overrideAlpha && (
                   <div className="bg-v-warn/10 border border-v-warn/30 rounded-lg px-3 py-2 text-xs text-v-warn flex items-center gap-1.5">
-                    <AlertTriangle className="w-3.5 h-3.5" /> Gamma overrode Alpha's decision → {entry.gammaCritique.suggestedAction.replace(/_/g, " ")}
+                    <AlertTriangle className="w-3.5 h-3.5" /> Judge overrode Warden's decision → {entry.gammaCritique.suggestedAction.replace(/_/g, " ")}
                   </div>
                 )}
               </div>

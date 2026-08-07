@@ -275,14 +275,14 @@ export function AgentVisualization({ currentEvent }: VisualizationProps) {
         <Robot 
           position={posAlpha} 
           color="#ff3366" 
-          label="Alpha (Detector)" 
+          label="Warden (Detector)" 
           isActive={activeNode === "alpha"} 
           rotation={[0, Math.PI / 4, 0]}
         />
         <Robot 
           position={posGamma} 
           color="#33ccff" 
-          label="Gamma (Critique)" 
+          label="Judge (Critique)" 
           isActive={activeNode === "gamma"} 
           rotation={[0, Math.PI / 4, 0]}
         />

@@ -59,10 +59,10 @@ export function SettingsPanel() {
       {/* Threshold */}
       <div className="bg-v-surface/80 backdrop-blur-xl rounded-2xl border border-v-border p-5 shadow-[0_0_20px_rgba(255,255,255,0.02)]">
         <h3 className="text-sm font-semibold text-v-text-secondary uppercase tracking-wider mb-4">
-          Gamma Threshold
+          Judge Threshold
         </h3>
         <p className="text-xs text-v-text-secondary mb-4">
-          Events with risk scores above this threshold trigger the Gamma critique agent.
+          Events with risk scores above this threshold trigger the Judge critique agent.
         </p>
         <div className="flex items-center gap-4">
           <input

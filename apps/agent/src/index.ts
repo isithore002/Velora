@@ -216,9 +216,9 @@ async function simulateMode(txHash?: string): Promise<void> {
     console.log(`\n${"─".repeat(60)}`);
     console.log(`📌 Transaction: ${event.txHash}`);
 
-    // Alpha analysis
+    // Warden analysis
     const alphaDecision = alphaAgent.analyze(event);
-    console.log(`\n🔍 Alpha Score: ${alphaDecision.riskScore}/100 (${alphaDecision.threatLevel.toUpperCase()})`);
+    console.log(`\n🔍 Warden Score: ${alphaDecision.riskScore}/100 (${alphaDecision.threatLevel.toUpperCase()})`);
     console.log(`   Proposed Action: ${alphaDecision.proposedAction}`);
     console.log(`   Heuristics:`);
     for (const h of alphaDecision.triggeredHeuristics) {
@@ -226,8 +226,8 @@ async function simulateMode(txHash?: string): Promise<void> {
     }
 
     if (alphaAgent.shouldEscalateToGamma(alphaDecision.riskScore)) {
-      // Gamma critique
-      console.log(`\n🧠 Gamma Critique (score > ${THRESHOLD}):`);
+      // Judge critique
+      console.log(`\n🧠 Judge Critique (score > ${THRESHOLD}):`);
       const critique = await gammaAgent.critique(
         event,
         alphaDecision,
@@ -240,7 +240,7 @@ async function simulateMode(txHash?: string): Promise<void> {
         console.log(`   ⚠️  OVERRIDE: ${critique.suggestedAction}`);
       }
     } else {
-      console.log(`\n🧠 Gamma: Skipped (score ${alphaDecision.riskScore} < threshold ${THRESHOLD})`);
+      console.log(`\n🧠 Judge: Skipped (score ${alphaDecision.riskScore} < threshold ${THRESHOLD})`);
     }
   }
 
@@ -293,22 +293,23 @@ async function pollAndProcess(): Promise<void> {
 }
 
 async function processEvent(event: DetectedEvent): Promise<void> {
-  // Step 1: Alpha Analysis
+  // Step 1: Warden Analysis
   const alphaDecision = alphaAgent.analyze(event);
   const auditEntry = auditLogger.createEntry(event, alphaDecision);
 
-  // Step 2: Check if Gamma critique is needed
+  // Step 2: Check if Judge critique is needed
   if (!alphaAgent.shouldEscalateToGamma(alphaDecision.riskScore)) {
-    // Low risk — alert only
+    console.log("   ↳ Threat score below threshold. Executing Alpha action immediately.");
     auditLogger.updateStatus(auditEntry.id, "confirmed");
     return;
   }
 
-  // Step 3: Pause 5 seconds before Gamma (give time for context)
+  // Step 3: Pause 5 seconds before Judge (give time for context)
+  console.log("   ↳ Escalating to Judge. Waiting 5 seconds for simulated network context...");
   await sleep(5000);
   auditLogger.updateStatus(auditEntry.id, "critiquing");
 
-  // Step 4: Gamma Critique
+  // Step 4: Judge Critique
   const critique = await gammaAgent.critique(
     event,
     alphaDecision,
@@ -364,7 +365,7 @@ async function processEvent(event: DetectedEvent): Promise<void> {
       auditLogger.markFailed(auditEntry.id);
     }
   } else {
-    // Gamma rejected — alert only
+    // Judge rejected — alert only
     console.log(JSON.stringify({
       type: "gamma_rejection",
       entryId: auditEntry.id,

@@ -120,10 +120,10 @@ export function AuditTimeline() {
 
               {/* Details */}
               <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-                {/* Alpha */}
+                {/* Warden */}
                 <div className="bg-v-base rounded-lg p-4 border border-v-border">
                   <h4 className="text-xs font-semibold text-v-info uppercase tracking-wider mb-2">
-                    Alpha
+                    Warden
                   </h4>
                   <p className="text-sm text-v-text-secondary">
                     Action: {entry.alphaDecision.proposedAction.replace(/_/g, " ")}
@@ -138,10 +138,10 @@ export function AuditTimeline() {
                   ))}
                 </div>
 
-                {/* Gamma */}
+                {/* Judge */}
                 <div className="bg-v-base rounded-lg p-4 border border-v-border">
                   <h4 className="text-xs font-semibold text-purple-400 uppercase tracking-wider mb-2">
-                    Gamma
+                    Judge
                   </h4>
                   {entry.gammaCritique ? (
                     <>
@@ -179,7 +179,7 @@ export function AuditTimeline() {
                   ) : (
                     <p className="text-xs text-v-text-secondary">
                       {entry.status === "rejected"
-                        ? "Blocked by Gamma"
+                        ? "Blocked by Judge"
                         : entry.status === "executing"
                         ? "In progress..."
                         : "No execution needed"}

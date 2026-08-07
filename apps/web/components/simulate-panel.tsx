@@ -58,7 +58,7 @@ export function SimulatePanel() {
           Threat Simulator
         </h2>
         <p className="text-sm text-v-text-secondary mt-1">
-          Paste a transaction hash to run it through the Alpha + Gamma pipeline
+          Paste a transaction hash to run it through the Warden + Judge pipeline
           without executing any actions.
         </p>
       </div>
@@ -186,10 +186,10 @@ export function SimulatePanel() {
             </div>
           </div>
 
-          {/* Gamma Critique */}
+          {/* Judge Critique */}
           <div>
             <h3 className="text-sm font-semibold text-v-text-secondary uppercase tracking-wider mb-3">
-              Gamma Critique
+              Judge Critique
             </h3>
             <div
               className={cn(
