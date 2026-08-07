@@ -74,6 +74,12 @@ export default function DashboardPage() {
     }
   };
 
+  const handleTestKeeperHub = () => {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      ws.send(JSON.stringify({ type: "SIMULATE_TRUE_THREAT" }));
+    }
+  };
+
   return (
     <div className="min-h-screen bg-v-base flex flex-col relative overflow-hidden">
       <div className="ambient-glow"></div>
@@ -100,12 +106,20 @@ export default function DashboardPage() {
               </span>
             </div>
             
-            <button
-              onClick={handleSimulateAttack}
-              className="bg-v-surface hover:bg-v-elevated text-v-text px-3 py-1 rounded text-xs font-bold tracking-wider uppercase border border-v-border transition-colors"
-            >
-              Simulate Attack
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={handleSimulateAttack}
+                className="bg-v-surface hover:bg-v-elevated text-v-text px-3 py-1 rounded text-xs font-bold tracking-wider uppercase border border-v-border transition-colors"
+              >
+                Random Event
+              </button>
+              <button
+                onClick={handleTestKeeperHub}
+                className="bg-v-danger hover:bg-v-danger/80 text-white px-3 py-1 rounded text-xs font-bold tracking-wider uppercase transition-colors"
+              >
+                Test KeeperHub
+              </button>
+            </div>
 
             <div className="h-6 w-px bg-v-border" />
 

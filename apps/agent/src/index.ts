@@ -64,6 +64,15 @@ wss.on("connection", (ws) => {
           syntheticEvent.amount = "1000.0"; // Large suspicious amount
           await processEvent(syntheticEvent);
         }
+      } else if (msg.type === "SIMULATE_TRUE_THREAT") {
+        console.log("🚨 Received manual TRUE THREAT trigger from dashboard");
+        // Guarantee a malicious scenario is selected (scenario index 0 is unlimited approval to unknown spender)
+        const allMocks = createMockEvents(10);
+        const maliciousEvent = allMocks.find(e => e.amount === "115792089237316195423570985008687907853269984665640564039457584007913129639935") || createMockEvents(1)[0];
+        if (maliciousEvent) {
+          maliciousEvent.contractAddress = MONITORED_WALLET;
+          await processEvent(maliciousEvent);
+        }
       }
     } catch (e) {
       // Ignore
