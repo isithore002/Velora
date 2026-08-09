@@ -182,7 +182,7 @@ export default function DashboardPage() {
         {/* Stats Cards (always visible) */}
         <StatsCards />
 
-        <div className="flex flex-col lg:flex-row gap-6 h-[650px] w-full">
+        <div className="flex flex-col lg:flex-row gap-6 h-[calc(100vh-220px)] min-h-[700px] w-full">
           {/* Left Half: 3D Visualization */}
           <div className="w-full lg:w-1/2 h-full rounded-none border border-v-border overflow-hidden relative">
             <AgentVisualization currentEvent={latestEvent} />
