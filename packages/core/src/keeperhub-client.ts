@@ -53,7 +53,7 @@ export class KeeperHubClient {
         "X-Org-Id": this.orgId,
       };
 
-      const transport = new SSEClientTransport(new URL("https://mcp.keeperhub.com/sse"), {
+      const transport = new SSEClientTransport(new URL("https://app.keeperhub.com/mcp"), {
         eventSourceInit: {
           headers
         } as any,
