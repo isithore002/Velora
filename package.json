@@ -5,7 +5,7 @@
   "description": "Velora — AI anomaly detection agent for crypto wallet protection via KeeperHub",
   "scripts": {
     "build": "turbo build",
-    "dev": "turbo dev",
+    "dev": "pnpm -r --parallel run dev",
     "lint": "turbo lint",
     "typecheck": "turbo typecheck",
     "test": "turbo test",

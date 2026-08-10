@@ -35,3 +35,6 @@ coverage/
 
 # OS
 Thumbs.db
+
+# Test Scripts
+attack.js

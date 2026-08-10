@@ -1,5 +1,5 @@
 import { config as dotenvConfig } from "dotenv";
-dotenvConfig();
+dotenvConfig({ path: '../../.env' });
 
 import {
   AuditLogger,
@@ -35,7 +35,7 @@ const auditManager = new SqliteAuditManager(auditLogger);
 const alphaAgent = new AlphaAgent({ gammaThreshold: THRESHOLD }, auditLogger);
 const gammaAgent = new CritiqueAgent(GEMINI_API_KEY);
 const keeperHubClient = new KeeperHubClient(KEEPERHUB_API_KEY, KEEPERHUB_ORG_ID, {
-  mockMode: !KEEPERHUB_API_KEY.startsWith("kh_"),
+  mockMode: !KEEPERHUB_API_KEY.startsWith("kh_") || KEEPERHUB_API_KEY === "kh_your_api_key_here",
 });
 await keeperHubClient.initializeMCP();
 

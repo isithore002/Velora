@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node dist/index.js",
-    "dev": "NODE_OPTIONS='--dns-result-order=ipv4first' tsx watch src/index.ts",
+    "dev": "tsx watch src/index.ts",
     "simulate": "node dist/index.js --simulate",
     "audit": "node dist/index.js --audit",
     "build": "tsup src/index.ts --format esm --clean",

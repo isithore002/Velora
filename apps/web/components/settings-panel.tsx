@@ -47,7 +47,7 @@ export function SettingsPanel() {
           )}
           <span className="text-sm text-v-text">
             {connectionStatus === "connected"
-              ? "Connected (Mock Mode)"
+              ? "Connected"
               : "Disconnected"}
           </span>
           <span className="text-xs text-v-text-secondary ml-auto font-mono">
