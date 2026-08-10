@@ -96,7 +96,7 @@ export class ActionRegistry {
   }
 
   private classifyScore(score: number): ThreatLevel {
-    if (score >= 85) return "critical";
+    if (score >= 80) return "critical";
     if (score >= 70) return "high";
     if (score >= 50) return "medium";
     return "low";
@@ -112,6 +112,6 @@ export function resolveAction(
 ): ProtectiveAction {
   const registry = new ActionRegistry();
   const level: ThreatLevel =
-    score >= 85 ? "critical" : score >= 70 ? "high" : score >= 50 ? "medium" : "low";
+    score >= 80 ? "critical" : score >= 70 ? "high" : score >= 50 ? "medium" : "low";
   return registry.resolveAction(event, score, level);
 }

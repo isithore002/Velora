@@ -12,10 +12,10 @@
     "clean": "turbo clean"
   },
   "devDependencies": {
-    "turbo": "^2.3.0",
-    "typescript": "^5.6.0",
+    "@types/node": "^20.17.0",
     "prettier": "^3.4.0",
-    "@types/node": "^20.17.0"
+    "turbo": "^2.3.0",
+    "typescript": "^5.6.0"
   },
   "packageManager": "pnpm@10.34.5",
   "engines": {
@@ -26,5 +26,9 @@
       "better-sqlite3",
       "esbuild"
     ]
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "ethers": "^6.17.0"
   }
 }

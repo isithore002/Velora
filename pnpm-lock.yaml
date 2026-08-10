@@ -7,6 +7,13 @@ settings:
 importers:
 
   .:
+    dependencies:
+      dotenv:
+        specifier: ^16.6.1
+        version: 16.6.1
+      ethers:
+        specifier: ^6.17.0
+        version: 6.17.0
     devDependencies:
       '@types/node':
         specifier: ^20.17.0

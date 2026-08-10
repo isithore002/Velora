@@ -1,5 +1,5 @@
 import { config as dotenvConfig } from "dotenv";
-dotenvConfig({ path: '../../.env' });
+dotenvConfig({ path: '../../.env', override: true });
 
 import {
   AuditLogger,
@@ -89,6 +89,15 @@ auditLogger.onUpdate((entry: AuditEntry) => {
   });
 });
 
+process.on("SIGINT", () => {
+  wss.close();
+  process.exit(0);
+});
+process.on("SIGTERM", () => {
+  wss.close();
+  process.exit(0);
+});
+
 // ─── CLI Mode Detection ─────────────────────────────────────────────────────
 
 const args = process.argv.slice(2);
@@ -165,38 +174,68 @@ async function startMonitoring(): Promise<void> {
       }
     }
   } else {
-    console.log(`Connecting to WebSocket provider at ${WSS_RPC_URL}...`);
-    const provider = new ethers.WebSocketProvider(WSS_RPC_URL);
+    // ─── Use HTTP provider for RELIABLE polling (WSS subscriptions are flaky on free-tier Alchemy) ───
+    const httpRpcUrl = WSS_RPC_URL.replace("wss://", "https://").replace("ws://", "http://");
+    const provider = new ethers.JsonRpcProvider(httpRpcUrl);
     
-    provider.on("pending", async (txHash: string) => {
-      if (!isRunning) return;
+    // Verify connection works
+    try {
+      const network = await provider.getNetwork();
+      const blockNumber = await provider.getBlockNumber();
+      console.log(`✅ Connected to chain ${network.chainId} (block #${blockNumber})`);
+      console.log(`🔍 Monitoring wallet: ${MONITORED_WALLET}`);
+      console.log(`🔒 Cold wallet: ${COLD_WALLET}`);
+      console.log(`📡 Polling every 4 seconds for new transactions...\n`);
+    } catch (err) {
+      console.error("❌ Failed to connect to RPC:", err);
+      return;
+    }
+
+    // Track the last block we've scanned
+    let lastScannedBlock = await provider.getBlockNumber();
+    console.log(`Starting scan from block #${lastScannedBlock}`);
+
+    // ─── PRIMARY: Poll for new blocks every 4 seconds ───
+    while (isRunning) {
       try {
-        const tx = await provider.getTransaction(txHash);
-        if (!tx) return;
+        const currentBlock = await provider.getBlockNumber();
         
-        // Check if our monitored wallet is involved
-        if (tx.from?.toLowerCase() === MONITORED_WALLET.toLowerCase() || 
-            tx.to?.toLowerCase() === MONITORED_WALLET.toLowerCase()) {
+        if (currentBlock > lastScannedBlock) {
+          // Scan each new block
+          for (let blockNum = lastScannedBlock + 1; blockNum <= currentBlock; blockNum++) {
+            const block = await provider.getBlock(blockNum, true);
+            if (!block) continue;
             
-            if (processedTxHashes.has(tx.hash)) return;
-            processedTxHashes.add(tx.hash);
+            console.log(`📦 Scanning block #${blockNum} (${block.prefetchedTransactions?.length ?? 0} txs)`);
             
-            const event = await parseEthersTx(tx);
-            if (event) {
-              console.log(`[Live WebSockets] Detected pending tx ${tx.hash} involving monitored wallet`);
-              await processEvent(event);
+            if (block.prefetchedTransactions) {
+              for (const tx of block.prefetchedTransactions) {
+                const fromMatch = tx.from?.toLowerCase() === MONITORED_WALLET.toLowerCase();
+                const toMatch = tx.to?.toLowerCase() === MONITORED_WALLET.toLowerCase();
+                
+                if (fromMatch || toMatch) {
+                  if (processedTxHashes.has(tx.hash)) continue;
+                  processedTxHashes.add(tx.hash);
+                  
+                  console.log(`\n🚨 DETECTED tx ${tx.hash} involving monitored wallet!`);
+                  console.log(`   From: ${tx.from} | To: ${tx.to}`);
+                  
+                  const event = await parseEthersTx(tx as any);
+                  if (event) {
+                    await processEvent(event);
+                  }
+                }
+              }
             }
+          }
+          lastScannedBlock = currentBlock;
         }
       } catch (err) {
-         // ignore fetch errors for fast moving mempool
+        console.error("Poll error:", err instanceof Error ? err.message : err);
       }
-    });
-
-    // Keep process alive
-    while (isRunning) {
-      await sleep(10000);
+      
+      await sleep(4000);
     }
-    provider.removeAllListeners();
   }
 
   console.log(`\n📊 Session Summary: ${auditLogger.getCount()} events processed`);

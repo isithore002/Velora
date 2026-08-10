@@ -120,7 +120,7 @@ export class RiskEngine {
    * Classify a numeric risk score into a threat level.
    */
   public classify(score: number): ThreatLevel {
-    if (score >= 85) return "critical";
+    if (score >= 80) return "critical";
     if (score >= 70) return "high";
     if (score >= 50) return "medium";
     return "low";
