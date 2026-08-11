@@ -1,7 +1,7 @@
 "use client";
 
 import { useAppStore } from "../lib/store";
-import { formatTime } from "../lib/utils";
+import { formatTime, getExplorerTxUrl, formatAddress } from "../lib/utils";
 import { Terminal } from "lucide-react";
 
 export function AuditTimeline() {
@@ -29,7 +29,15 @@ export function AuditTimeline() {
           <div key={entry.id} className="mb-4 space-y-1.5 animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
             <div className="text-v-text-secondary">
               <span className="text-v-text-secondary/50">[{formatTime(entry.timestamp)}]</span>{" "}
-              <span className="text-v-info font-bold">system</span> &gt; EVENT_DETECTED: {entry.event.txHash}
+              <span className="text-v-info font-bold">system</span> &gt; EVENT_DETECTED:{" "}
+              <a
+                href={getExplorerTxUrl(entry.event.txHash, entry.event.chainId)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-v-info hover:underline"
+              >
+                {formatAddress(entry.event.txHash, 8)}
+              </a>
             </div>
             
             <div className="text-v-text-secondary">
@@ -67,7 +75,16 @@ export function AuditTimeline() {
             {entry.keeperhubTxHash ? (
                 <div className="text-v-text-secondary">
                   <span className="text-v-text-secondary/50">[{formatTime(entry.timestamp)}]</span>{" "}
-                  <span className="text-v-safe font-bold">keeperhub</span> &gt; EXECUTION SUCCESS: {entry.keeperhubTxHash} (Gas: {entry.gasUsed})
+                  <span className="text-v-safe font-bold">keeperhub</span> &gt; EXECUTION SUCCESS:{" "}
+                  <a
+                    href={getExplorerTxUrl(entry.keeperhubTxHash, entry.event.chainId)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-v-safe hover:underline"
+                  >
+                    {formatAddress(entry.keeperhubTxHash, 8)}
+                  </a>
+                  {" "}(Gas: {entry.gasUsed})
                 </div>
             ) : (
                 entry.status === "rejected" ? (

@@ -72,3 +72,31 @@ export function formatUSD(value: number): string {
     minimumFractionDigits: 0,
   }).format(value);
 }
+
+/** Build a block explorer URL for a transaction hash */
+export function getExplorerTxUrl(txHash: string, chainId: number = 84532): string {
+  switch (chainId) {
+    case 1:
+      return `https://etherscan.io/tx/${txHash}`;
+    case 8453:
+      return `https://basescan.org/tx/${txHash}`;
+    case 84532:
+      return `https://sepolia.basescan.org/tx/${txHash}`;
+    default:
+      return `https://sepolia.basescan.org/tx/${txHash}`;
+  }
+}
+
+/** Build a block explorer URL for an address */
+export function getExplorerAddressUrl(address: string, chainId: number = 84532): string {
+  switch (chainId) {
+    case 1:
+      return `https://etherscan.io/address/${address}`;
+    case 8453:
+      return `https://basescan.org/address/${address}`;
+    case 84532:
+      return `https://sepolia.basescan.org/address/${address}`;
+    default:
+      return `https://sepolia.basescan.org/address/${address}`;
+  }
+}

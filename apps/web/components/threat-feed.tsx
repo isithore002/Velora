@@ -5,6 +5,7 @@ import {
   formatAddress,
   formatTime,
   getThreatBadge,
+  getExplorerTxUrl,
   cn,
 } from "../lib/utils";
 import {
@@ -65,10 +66,16 @@ export function ThreatFeed() {
               </span>
 
               {/* Tx Hash */}
-              <span className="text-sm font-mono text-v-info hover:underline flex items-center gap-1">
+              <a
+                href={getExplorerTxUrl(entry.event.txHash, entry.event.chainId)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-mono text-v-info hover:text-v-info/80 hover:underline flex items-center gap-1 transition-colors"
+                onClick={(e) => e.stopPropagation()}
+              >
                 {formatAddress(entry.event.txHash, 4)}
                 <ExternalLink className="w-3 h-3 opacity-50" />
-              </span>
+              </a>
 
               {/* Score */}
               <span

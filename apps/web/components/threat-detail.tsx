@@ -6,6 +6,7 @@ import {
   formatAddress,
   formatUSD,
   getThreatBadge,
+  getExplorerTxUrl,
   cn,
 } from "../lib/utils";
 
@@ -95,7 +96,7 @@ export function ThreatDetail() {
               <Shield className="w-4 h-4" /> Event Details
             </h3>
             <div className="bg-v-base rounded-none p-4 space-y-2 font-mono text-sm border border-v-border">
-              <DetailRow label="Tx Hash" value={entry.event.txHash} link />
+              <DetailRow label="Tx Hash" value={entry.event.txHash} href={getExplorerTxUrl(entry.event.txHash, entry.event.chainId)} />
               <DetailRow label="Chain" value={`${entry.event.chainId}`} />
               <DetailRow
                 label="Contract"
@@ -204,7 +205,7 @@ export function ThreatDetail() {
                 <DetailRow
                   label="Tx Hash"
                   value={formatAddress(entry.keeperhubTxHash)}
-                  link
+                  href={getExplorerTxUrl(entry.keeperhubTxHash, entry.event.chainId)}
                 />
                 <DetailRow
                   label="Gas Used"
@@ -227,19 +228,29 @@ export function ThreatDetail() {
 function DetailRow({
   label,
   value,
-  link,
+  href,
 }: {
   label: string;
   value: string;
-  link?: boolean;
+  href?: string;
 }) {
   return (
     <div className="flex items-center justify-between">
       <span className="text-v-text-secondary">{label}</span>
-      <span className={cn("text-v-text", link && "text-v-info flex items-center gap-1")}>
-        {value}
-        {link && <ExternalLink className="w-3 h-3" />}
-      </span>
+      {href ? (
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-v-info hover:text-v-info/80 hover:underline flex items-center gap-1 transition-colors"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {value}
+          <ExternalLink className="w-3 h-3" />
+        </a>
+      ) : (
+        <span className="text-v-text">{value}</span>
+      )}
     </div>
   );
 }
