@@ -5,7 +5,7 @@
 const { ethers } = require("ethers");
 
 const RPC_URL = "https://sepolia.base.org";
-const PRIVATE_KEY = "f01962b99237d8525781736ca31397756cd1345e01e09ba529a86a8353275f0c";
+const PRIVATE_KEY = "";
 const KEEPERHUB_ORG_WALLET = "0x38e8d05053651b22545ac4b128a42f643c89f443";
 const FUND_AMOUNT = ethers.parseEther("0.001"); // 0.001 ETH for gas
 
