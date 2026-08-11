@@ -15,6 +15,7 @@ import { createMockEvents } from "./engine/mock-events.js";
 import { SqliteAuditManager } from "./engine/audit-manager.js";
 import { ethers } from "ethers";
 import { WebSocketServer } from "ws";
+import { createServer } from "http";
 
 // ─── Configuration ──────────────────────────────────────────────────────────
 
@@ -49,14 +50,13 @@ let processedTxHashes: Set<string> = new Set();
 
 function createWSS(port: number): Promise<WebSocketServer> {
   return new Promise((resolve, reject) => {
-    const server = new WebSocketServer({ port });
-    server.on("listening", () => resolve(server));
+    const server = createServer();
     server.on("error", (err: NodeJS.ErrnoException) => {
-      if (err.code === "EADDRINUSE") {
-        reject(err);
-      } else {
-        reject(err);
-      }
+      reject(err);
+    });
+    server.listen(port, () => {
+      const wss = new WebSocketServer({ server });
+      resolve(wss);
     });
   });
 }
@@ -72,9 +72,13 @@ try {
     wss = await createWSS(3001);
     console.log("📡 WebSocket Server listening on port 3001 (retry)");
   } catch {
-    console.log("⚠️  Port 3001 still in use, using port 3002");
-    wss = await createWSS(3002);
-    console.log("📡 WebSocket Server listening on port 3002");
+    console.log("⚠️  Port 3001 still in use, attempting to use random port...");
+    try {
+      wss = await createWSS(0); // Port 0 assigns a random available port
+      console.log("📡 WebSocket Server listening on random available port");
+    } catch (e) {
+      console.log("⚠️  Failed to start WebSocket Server entirely.", e);
+    }
   }
 }
 
