@@ -37,15 +37,46 @@ const gammaAgent = new CritiqueAgent(GEMINI_API_KEY);
 const keeperHubClient = new KeeperHubClient(KEEPERHUB_API_KEY, KEEPERHUB_ORG_ID, {
   mockMode: !KEEPERHUB_API_KEY.startsWith("kh_") || KEEPERHUB_API_KEY === "kh_your_api_key_here",
 });
-await keeperHubClient.initializeMCP();
+await keeperHubClient.initializeMCP().catch(() => {
+  // MCP SSE connection is optional — agent falls back to REST API
+  console.log("ℹ️  MCP connection unavailable, using REST API fallback");
+});
 
 let isRunning = false;
 let processedTxHashes: Set<string> = new Set();
 
 // ─── WebSocket Server ───────────────────────────────────────────────────────
 
-const wss = new WebSocketServer({ port: 3001 });
-console.log("📡 WebSocket Server listening on port 3001");
+function createWSS(port: number): Promise<WebSocketServer> {
+  return new Promise((resolve, reject) => {
+    const server = new WebSocketServer({ port });
+    server.on("listening", () => resolve(server));
+    server.on("error", (err: NodeJS.ErrnoException) => {
+      if (err.code === "EADDRINUSE") {
+        reject(err);
+      } else {
+        reject(err);
+      }
+    });
+  });
+}
+
+let wss: WebSocketServer;
+try {
+  wss = await createWSS(3001);
+  console.log("📡 WebSocket Server listening on port 3001");
+} catch {
+  console.log("⚠️  Port 3001 in use, waiting 2s for cleanup...");
+  await new Promise(r => setTimeout(r, 2000));
+  try {
+    wss = await createWSS(3001);
+    console.log("📡 WebSocket Server listening on port 3001 (retry)");
+  } catch {
+    console.log("⚠️  Port 3001 still in use, using port 3002");
+    wss = await createWSS(3002);
+    console.log("📡 WebSocket Server listening on port 3002");
+  }
+}
 
 wss.on("connection", (ws) => {
   ws.send(JSON.stringify({
