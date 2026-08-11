@@ -2,7 +2,8 @@
   "name": "revoke-allowance",
   "description": "Revoke an ERC20 token approval by setting allowance to 0",
   "trigger": "webhook",
-  "chain": "base",
+  "chain": "base-sepolia",
+  "chainId": "84532",
   "steps": [
     {
       "action": "read_contract",

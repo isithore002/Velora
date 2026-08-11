@@ -152,9 +152,12 @@ export class KeeperHubClient {
       { inputs }
     );
 
+    const raw = response as Record<string, unknown>;
     return {
-      ...(response as Record<string, unknown>),
+      ...raw,
       workflowId,
+      // PR #1990: contract-call now returns transactionLink
+      transactionLink: (raw.transactionLink as string) ?? null,
       timestamp: Date.now(),
     } as ExecutionResult;
   }

@@ -452,10 +452,12 @@ async function processEvent(event: DetectedEvent): Promise<void> {
         
         const txHash = execResult.transactionHash ?? "no-tx";
         const gasUsed = 21000;
+        // Build verifiable proof link (fallback if KeeperHub doesn't return one)
+        const txLink = execResult.transactionLink ?? (txHash !== "no-tx" ? `https://sepolia.basescan.org/tx/${txHash}` : null);
         
         console.log(`   ✅ KeeperHub execution ${execResult.status}: ${txHash}`);
-        if (execResult.transactionLink) {
-          console.log(`   🔗 ${execResult.transactionLink}`);
+        if (txLink) {
+          console.log(`   🔗 PROOF LINK: ${txLink}`);
         }
         
         auditLogger.markConfirmed(auditEntry.id, txHash, gasUsed);
@@ -485,16 +487,42 @@ async function processEvent(event: DetectedEvent): Promise<void> {
         });
         
         const execResult = await execResponse.json() as any;
+        
+        // Poll status if pending (same pattern as sweep)
+        if (execResult.executionId && execResult.status !== "completed" && execResult.status !== "failed") {
+          console.log(`   ⏳ Polling execution status...`);
+          for (let i = 0; i < 30; i++) {
+            await sleep(3000);
+            const statusResponse = await fetch(`${KEEPERHUB_BASE}/execute/${execResult.executionId}/status`, {
+              headers: { "Authorization": `Bearer ${KEEPERHUB_API_KEY}` },
+            });
+            const statusResult = await statusResponse.json() as any;
+            if (statusResult.status === "completed" || statusResult.status === "failed") {
+              execResult.status = statusResult.status;
+              execResult.transactionHash = statusResult.transactionHash ?? execResult.transactionHash;
+              execResult.transactionLink = statusResult.transactionLink ?? execResult.transactionLink;
+              break;
+            }
+          }
+        }
+        
+        const txHash = execResult.transactionHash ?? "no-tx";
+        // PR #1990: contract-call now returns transactionLink
+        const txLink = execResult.transactionLink ?? (txHash !== "no-tx" ? `https://sepolia.basescan.org/tx/${txHash}` : null);
+        
         console.log(JSON.stringify({
           type: "keeperhub_execution",
           action: finalAction,
           executionId: execResult.executionId,
           status: execResult.status,
-          txHash: execResult.transactionHash,
+          txHash,
+          txLink,
         }));
         
-        const txHash = execResult.transactionHash ?? "no-tx";
         console.log(`   ✅ KeeperHub revoke ${execResult.status}: ${txHash}`);
+        if (txLink) {
+          console.log(`   🔗 PROOF LINK: ${txLink}`);
+        }
         
         auditLogger.markConfirmed(auditEntry.id, txHash, 46000);
         

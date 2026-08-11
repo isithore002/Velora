@@ -2,7 +2,8 @@
   "name": "sweep-to-cold",
   "description": "Emergency sweep of ERC20 tokens and native ETH to cold wallet",
   "trigger": "webhook",
-  "chain": "base",
+  "chain": "base-sepolia",
+  "chainId": "84532",
   "steps": [
     {
       "action": "transfer",

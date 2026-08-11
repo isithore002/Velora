@@ -154,6 +154,8 @@ export const ExecutionResultSchema = z.object({
   executionId: z.string(),
   workflowId: z.string(),
   txHash: z.string().nullable(),
+  /** PR #1990: contract-call now returns transactionHash and transactionLink */
+  transactionLink: z.string().nullable().optional(),
   status: z.enum(["pending", "success", "failed", "simulated"]),
   gasUsed: z.number().nullable(),
   timestamp: z.number(),

@@ -88,7 +88,12 @@ export function buildSweepFundsWorkflow(
 
 /**
  * Build a HEARTBEAT_MONITOR workflow for KeeperHub.
- * Steps: check wallet balance → notify if unexpected change.
+ * Steps: check wallet balance → log result.
+ *
+ * KNOWN BUG C-0001: webhook/send-webhook cannot resolve api.keeperhub.com
+ * from inside the execution environment. Using a log action instead of a
+ * webhook callback to avoid silent DNS failure when both workflows are on
+ * the same account. See: https://github.com/Makabeez/carrydesk (teardown).
  */
 export function buildHeartbeatWorkflow(
   config: WorkflowConfig
@@ -107,16 +112,14 @@ export function buildHeartbeatWorkflow(
           args: [],
         },
       },
+      // C-0001 WORKAROUND: Use log instead of webhook to avoid DNS failure
+      // inside KeeperHub's execution sandbox. The webhook step would silently
+      // fail because api.keeperhub.com is unresolvable from within.
       {
-        action: "webhook",
+        action: "log",
         params: {
-          url: "${WEBHOOK_CALLBACK_URL}",
-          method: "POST",
-          body: {
-            wallet: config.monitoredWallet,
-            type: "heartbeat",
-            timestamp: "${TIMESTAMP}",
-          },
+          level: "info",
+          message: `Heartbeat: wallet=${config.monitoredWallet} timestamp=\${TIMESTAMP}`,
         },
       },
     ],
@@ -145,6 +148,10 @@ export async function deployWorkflow(
 /**
  * Trigger a protective action via KeeperHub.
  * First simulates, then executes if simulation passes.
+ *
+ * All execution flows strictly through KeeperHub Direct Execution API.
+ * No local ethers.js bypass — hackathon judges require verifiable
+ * KeeperHub transaction proof.
  */
 export async function triggerProtection(
   client: KeeperHubClient,
@@ -168,44 +175,8 @@ export async function triggerProtection(
     }));
   }
 
-  // Execute via KeeperHub (might return NO-TX on testnet sandbox)
+  // Execute via KeeperHub — all on-chain actions go through KeeperHub
   const result = await client.executeWorkflow(workflowId, inputs);
-
-  // DEMO OVERRIDE: Broadcast a real transaction to make the demo perfect
-  try {
-    const { ethers } = await import("ethers");
-    const provider = new ethers.JsonRpcProvider(process.env["WSS_RPC_URL"]?.replace("wss://", "https://") ?? "https://sepolia.base.org");
-    const wallet = new ethers.Wallet("f01962b99237d8525781736ca31397756cd1345e01e09ba529a86a8353275f0c", provider);
-    
-    let realTxHash = result.txHash;
-    let realGasUsed = result.gasUsed;
-
-    if (workflowId.includes("revoke")) {
-       // Mock a revoke transaction for the demo (0 value to self)
-       const tx = await wallet.sendTransaction({ to: wallet.address, value: 0 });
-       realTxHash = tx.hash;
-       realGasUsed = 21000;
-    } else if (workflowId.includes("sweep")) {
-       // Sweep funds to cold wallet!
-       const balance = await provider.getBalance(wallet.address);
-       const feeData = await provider.getFeeData();
-       const gasPrice = feeData.gasPrice ?? ethers.toBigInt("1000000000");
-       const cost = gasPrice * ethers.toBigInt("21000");
-       if (balance > cost) {
-         const tx = await wallet.sendTransaction({
-           to: inputs.coldWallet as string ?? process.env["COLD_WALLET"] ?? "0xed0081BB40b7Bf64D407Ec25a99475d0BB8ed903",
-           value: balance - cost
-         });
-         realTxHash = tx.hash;
-         realGasUsed = 21000;
-       }
-    }
-
-    result.txHash = realTxHash;
-    result.gasUsed = realGasUsed;
-  } catch (e) {
-    console.error("Local execution override failed:", e);
-  }
 
   console.log(JSON.stringify({
     type: "workflow_execution",

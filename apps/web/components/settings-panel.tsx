@@ -51,7 +51,7 @@ export function SettingsPanel() {
               : "Disconnected"}
           </span>
           <span className="text-xs text-v-text-secondary ml-auto font-mono">
-            Base (Chain ID: 8453)
+            Base Sepolia (Chain ID: 84532)
           </span>
         </div>
       </div>

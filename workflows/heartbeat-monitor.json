@@ -2,7 +2,8 @@
   "name": "heartbeat-monitor",
   "description": "Check wallet balance every 5 minutes and notify on unexpected changes",
   "trigger": "cron",
-  "chain": "base",
+  "chain": "base-sepolia",
+  "chainId": "84532",
   "schedule": "*/5 * * * *",
   "steps": [
     {
@@ -14,16 +15,11 @@
       }
     },
     {
-      "action": "webhook",
+      "_note": "KNOWN BUG C-0001: webhook/send-webhook cannot resolve api.keeperhub.com from inside the execution environment. Using log action instead of webhook callback to avoid silent DNS failure.",
+      "action": "log",
       "params": {
-        "url": "{{CALLBACK_URL}}",
-        "method": "POST",
-        "body": {
-          "wallet": "{{WALLET_ADDRESS}}",
-          "type": "heartbeat",
-          "balance": "{{PREVIOUS_STEP_RESULT}}",
-          "timestamp": "{{TIMESTAMP}}"
-        }
+        "level": "info",
+        "message": "Heartbeat: wallet={{WALLET_ADDRESS}} balance={{PREVIOUS_STEP_RESULT}} timestamp={{TIMESTAMP}}"
       }
     }
   ]
